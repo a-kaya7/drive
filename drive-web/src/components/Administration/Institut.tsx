@@ -6,10 +6,10 @@ import { FiEdit, FiTrash2 } from "react-icons/fi";
 const PRIMARY_COLOR = "#174bd1ff";
 
 interface Institute {
-  bezeichnung: string;
   institutsname: string;
-  id: number;
-  idname: string;
+  beschreibung: string;
+  locale: string;
+  telefon: string;
 }
 
 const InstitutListe: React.FC = () => {
@@ -22,18 +22,18 @@ const InstitutListe: React.FC = () => {
 
   const fetchInstitute = async () => {
     try {
-      const response = await axios.get<Institute[]>("/api/institutanzeigen");
+      const response = await axios.get<Institute[]>("http://localhost:8080/api/institutlist");
       setInstitute(response.data);
     } catch (err) {
       console.error("Fehler beim Laden der Institute:", err);
     }
   };
 
-  const handleDelete = async (idname: string) => {
+  const handleDelete = async (institutsname: string) => {
     if (!window.confirm("Soll dieses Institut gelöscht werden?")) return;
     try {
-      await axios.delete(`/api/institute/${idname}`);
-      setInstitute((prev) => prev.filter((inst) => inst.idname !== idname));
+      await axios.delete(`/api/institutlist/${institutsname}`);
+      setInstitute((prev) => prev.filter((inst) => inst.institutsname !== institutsname));
     } catch (e: any) {
       const errorMessage =
         e.response?.data?.error || e.response?.data?.message || "Löschen fehlgeschlagen!";
@@ -43,30 +43,32 @@ const InstitutListe: React.FC = () => {
 
   return (
     <div style={page}>
-      {/* Sayfa Başlığı */}
+      {/* Institute */}
       <h2 style={titleStyle}>Institute</h2>
 
       <table style={tableStyle}>
         <thead>
           <tr>
-            <th style={thStyle}>ID</th>
+            <th style={thStyle}>Institutsname</th>
             <th style={thStyle}>Bezeichnung</th>
-            <th style={thStyle}>InstitutName</th>
+            <th style={thStyle}>Local</th>
+            <th style={thStyle}>Telefon</th>
             <th style={thStyle}>Aktion</th>
           </tr>
         </thead>
         <tbody>
           {institute.map((item) => (
-            <tr key={item.idname}>
-              <td style={tdStyle}>{item.idname}</td>
-              <td style={tdStyle}>{item.bezeichnung}</td>
+            <tr key={item.institutsname}>
               <td style={tdStyle}>{item.institutsname}</td>
+              <td style={tdStyle}>{item.beschreibung}</td>
+              <td style={tdStyle}>{item.locale}</td>
+              <td style={tdStyle}>{item.telefon}</td>
               <td style={tdStyle}>
                 {/* Bearbeiten */}
                 <button
                   type="button"
                   style={iconButton}
-                  onClick={() => navigate(`/institutbearbeiten/${item.idname}`)}
+                  onClick={() => navigate(`/institutbearbeiten/${item.institutsname}`)}
                   aria-label="Institut bearbeiten"
                   title="Institut bearbeiten"
                 >
@@ -77,7 +79,7 @@ const InstitutListe: React.FC = () => {
                 <button
                   type="button"
                   style={{ ...iconButton, marginLeft: "0.5rem" }}
-                  onClick={() => handleDelete(item.idname)}
+                  onClick={() => handleDelete(item.institutsname)}
                   aria-label="Löschen"
                   title="Löschen"
                 >
@@ -89,7 +91,7 @@ const InstitutListe: React.FC = () => {
         </tbody>
       </table>
 
-      {/* Butonu tablonun altına sağa hizala */}
+      {/* Buton */}
       <div style={buttonContainer}>
         <button style={buttonPrimary} onClick={() => navigate("/institutneuanlage")}>
           Neuanlage
