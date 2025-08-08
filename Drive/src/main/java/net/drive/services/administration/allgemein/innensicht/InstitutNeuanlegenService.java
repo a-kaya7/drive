@@ -25,8 +25,9 @@ public class InstitutNeuanlegenService implements IInstitutNeuanlegenService  {
 	public InstitutDTO createInstitut(InstitutDTO institutDto) {
 		
 		if(institutDto.institutsname() != null && !institutDto.institutsname().isEmpty()) {
-			institutRepo.existsByInstitutsname(institutDto.institutsname());
+			if(institutRepo.existsByInstitutsname(institutDto.institutsname())) {
 			throw new RuntimeException(logicResource.getMessage("IdnameExistiert"));
+			}
 		}
 		Institut institutEntity = mapToEntity(institutDto);
 		Institut savedEntity = institutRepo.save(institutEntity);
