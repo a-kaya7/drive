@@ -3,4 +3,6 @@
     <IdnameExistiert>Ein Institut mit diesem Name existiert bereits.</IdnameExistiert>
     <InstitutNull>Institutsname ist null</InstitutNull>
     <InstitutNichtGefunden>Institutsname wurde nicht gefunden</InstitutNichtGefunden>
+    <KeinInstitut>Institut wurde mit dem {0} nicht gefunden</KeinInstitut>
+    <InstitutLoesch>Institut {0} wurde gelöscht</InstitutLoesch>
 </messages>
