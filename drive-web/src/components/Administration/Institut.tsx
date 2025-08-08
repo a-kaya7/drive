@@ -32,7 +32,7 @@ const InstitutListe: React.FC = () => {
   const handleDelete = async (institutsname: string) => {
     if (!window.confirm("Soll dieses Institut gelöscht werden?")) return;
     try {
-      await axios.delete(`/api/institutlist/${institutsname}`);
+      await axios.delete(`http://localhost:8080/api/institut/${institutsname}`);
       setInstitute((prev) => prev.filter((inst) => inst.institutsname !== institutsname));
     } catch (e: any) {
       const errorMessage =
