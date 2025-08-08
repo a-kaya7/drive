@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <messages>
     <IdnameExistiert>Ein Institut mit diesem Name existiert bereits.</IdnameExistiert>
+    <InstitutNull>Institutsname ist null</InstitutNull>
+    <InstitutNichtGefunden>Institutsname wurde nicht gefunden</InstitutNichtGefunden>
 </messages>
