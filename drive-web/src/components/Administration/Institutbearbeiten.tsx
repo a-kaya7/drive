@@ -1,53 +1,61 @@
 import React, { useEffect, useState } from "react";
 import type { FormEvent } from "react";
 import axios from "axios";
-import { useNavigate, useParams } from "react-router-dom";;
+import { useNavigate, useParams } from "react-router-dom";
 
 const PRIMARY_COLOR = "#174bd1ff";
 
 const Institutbearbeiten: React.FC = () => {
-  const { idname: routeIdname } = useParams<{ idname: string }>();
+  const { institutsname: routeInstitutsname } = useParams<{ institutsname: string }>();
   const navigate = useNavigate();
 
-  const [idname, setIdname] = useState("");
   const [institutsname, setInstitutsname] = useState("");
   const [bezeichnung, setBezeichnung] = useState("");
-  const [bankleitzahl, setBankleitzahl] = useState("");
+  const [iban, setIban] = useState("");
   const [bic, setBic] = useState("");
-  const [bwl, setBwl] = useState("");
+  const [waehrung, setWaehrung] = useState("");
   const [locale, setLocale] = useState("");
+  const [strasse, setStrasse] = useState("");
+  const [plz, setPlz] = useState("");
+  const [ort, setOrt] = useState("");
+  const [land, setLand] = useState("");
+  const [telefon, setTelefon] = useState("");
+  const [email, setEmail] = useState("");
 
   const [error, setError] = useState("");
-  const [message, setMessage] = useState<{ text: string; type: string }>({ text: "", type: "" });
+  const [message, setMessage] = useState({ text: "", type: "" });
   const [loading, setLoading] = useState(false);
 
-  // Veriyi çek
   useEffect(() => {
     const fetchInstitut = async () => {
       try {
-        const res = await axios.get(`/api/institute/${routeIdname}`);
+        const res = await axios.get(`http://localhost:8080/api/institut/${routeInstitutsname}`);
         const data = res.data;
 
-        setIdname(data.idname || "");
         setInstitutsname(data.institutsname || "");
         setBezeichnung(data.bezeichnung || "");
-        setBankleitzahl(data.bankleitzahl || "");
+        setIban(data.iban || "");
         setBic(data.bic || "");
-        setBwl(data.bwl || "");
+        setWaehrung(data.waehrung || "");
         setLocale(data.locale || "");
+        setStrasse(data.adresse?.strasse  ??  "");
+        setPlz(data.adresse?.plz ?? "");
+        setOrt(data.adresse?.ort ?? "");
+        setLand(data.adresse?.land ?? "");
+        setTelefon(data.telefon || "");
+        setEmail(data.email || "");
       } catch (err) {
         setError("Fehler beim Laden des Instituts.");
       }
     };
 
-    if (routeIdname) fetchInstitut();
-  }, [routeIdname]);
+    if (routeInstitutsname) fetchInstitut();
+  }, [routeInstitutsname]);
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     setMessage({ text: "", type: "" });
 
-    if (!idname.trim()) return setError("ID ist erforderlich!");
     if (!institutsname.trim()) return setError("Institutsname ist erforderlich!");
     if (!bezeichnung.trim()) return setError("Bezeichnung ist erforderlich!");
 
@@ -55,14 +63,21 @@ const Institutbearbeiten: React.FC = () => {
     setLoading(true);
 
     try {
-      await axios.put(`/api/institute/${routeIdname}`, {
-        idname,
+      await axios.put(`http://localhost:8080/api/institutbearbeiten/${routeInstitutsname}`, {
         institutsname,
         bezeichnung,
-        bankleitzahl,
+        iban,
         bic,
-        bwl,
+        waehrung,
         locale,
+        adresse: {
+         strasse,
+         plz,
+         ort,
+         land,
+      },
+        telefon,
+        email,
       });
 
       setMessage({ text: "Institut erfolgreich aktualisiert!", type: "success" });
@@ -83,82 +98,140 @@ const Institutbearbeiten: React.FC = () => {
         <h2 style={title}>Institut bearbeiten</h2>
 
         <form onSubmit={handleSubmit}>
-          <h3 style={sectionTitle}>Grunddaten</h3>
+          <div style={twoColumn}>
+            {/* Grunddaten */}
+            <div style={column}>
+              <h3 style={sectionTitle}>Grunddaten</h3>
 
-          <div style={field}>
-            <label style={label}>
-              ID <span style={{ color: "red" }}>*</span>
-            </label>
-            <input
-              type="text"
-              value={idname}
-              onChange={(e) => setIdname(e.target.value)}
-              style={input}
-            />
-          </div>
+              <div style={field}>
+                <label style={label}>
+                  Institutsname <span style={{ color: "red" }}>*</span>
+                </label>
+                <input
+                  type="text"
+                  value={institutsname}
+                  onChange={(e) => setInstitutsname(e.target.value)}
+                  style={input}
+                />
+              </div>
 
-          <div style={field}>
-            <label style={label}>
-              Institutsname <span style={{ color: "red" }}>*</span>
-            </label>
-            <input
-              type="text"
-              value={institutsname}
-              onChange={(e) => setInstitutsname(e.target.value)}
-              style={input}
-            />
-          </div>
+              <div style={field}>
+                <label style={label}>
+                  Bezeichnung <span style={{ color: "red" }}>*</span>
+                </label>
+                <input
+                  type="text"
+                  value={bezeichnung}
+                  onChange={(e) => setBezeichnung(e.target.value)}
+                  style={input}
+                />
+              </div>
 
-          <div style={field}>
-            <label style={label}>
-              Bezeichnung <span style={{ color: "red" }}>*</span>
-            </label>
-            <input
-              type="text"
-              value={bezeichnung}
-              onChange={(e) => setBezeichnung(e.target.value)}
-              style={input}
-            />
-          </div>
+              <div style={field}>
+                <label style={label}>IBAN</label>
+                <input
+                  type="text"
+                  value={iban}
+                  onChange={(e) => setIban(e.target.value)}
+                  style={input}
+                />
+              </div>
 
-          <div style={field}>
-            <label style={label}>Bankleitzahl</label>
-            <input
-              type="text"
-              value={bankleitzahl}
-              onChange={(e) => setBankleitzahl(e.target.value)}
-              style={input}
-            />
-          </div>
+              <div style={field}>
+                <label style={label}>BIC</label>
+                <input
+                  type="text"
+                  value={bic}
+                  onChange={(e) => setBic(e.target.value)}
+                  style={input}
+                />
+              </div>
 
-          <div style={field}>
-            <label style={label}>BIC</label>
-            <input
-              type="text"
-              value={bic}
-              onChange={(e) => setBic(e.target.value)}
-              style={input}
-            />
-          </div>
+              <div style={field}>
+                <label style={label}>Währung</label>
+                <input
+                  type="text"
+                  value={waehrung}
+                  onChange={(e) => setWaehrung(e.target.value)}
+                  style={input}
+                />
+              </div>
 
-          <div style={field}>
-            <label style={label}>BWL</label>
-            <input
-              type="text"
-              value={bwl}
-              onChange={(e) => setBwl(e.target.value)}
-              style={input}
-            />
-          </div>
+              <div style={field}>
+                <label style={label}>Locale</label>
+                <input
+                  type="text"
+                  value={locale}
+                  onChange={(e) => setLocale(e.target.value)}
+                  style={input}
+                />
+              </div>
+            </div>
 
-          <div style={field}>
-            <label style={label}>Locale</label>
-            <input
-              type="text"
-              value={locale}
-              onChange={(e) => setLocale(e.target.value)}
-              style={input}
-            />
+            {/* Adresse-Daten */}
+            <div style={column}>
+              <h3 style={sectionTitle}>Adresse-Daten</h3>
+
+              <div style={field}>
+                <label style={label}>Straße</label>
+                <input
+                  type="text"
+                  value={strasse}
+                  onChange={(e) => setStrasse(e.target.value)}
+                  style={input}
+                />
+              </div>
+
+              <div style={field}>
+                <label style={label}>PLZ</label>
+                <input
+                  type="text"
+                  value={plz}
+                  onChange={(e) => setPlz(e.target.value)}
+                  style={input}
+                />
+              </div>
+
+              <div style={field}>
+                <label style={label}>Ort</label>
+                <input
+                  type="text"
+                  value={ort}
+                  onChange={(e) => setOrt(e.target.value)}
+                  style={input}
+                />
+              </div>
+
+              <div style={field}>
+                <label style={label}>Land</label>
+                <input
+                  type="text"
+                  value={land}
+                  onChange={(e) => setLand(e.target.value)}
+                  style={input}
+                />
+              </div>
+
+              <div style={field}>
+                <label style={label}>Telefon</label>
+                <input
+                  type="text"
+                  value={telefon}
+                  onChange={(e) => setTelefon(e.target.value)}
+                  style={input}
+                />
+              </div>
+
+              <div style={field}>
+                <label style={label}>Email</label>
+                <input
+                  type="text"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  style={input}
+                />
+              </div>
+            </div>
           </div>
 
           {error && <div style={errorStyle}>{error}</div>}
@@ -191,17 +264,27 @@ const Institutbearbeiten: React.FC = () => {
   );
 };
 
-// Stil ayarları (aynı kalabilir)
-const page: React.CSSProperties = { fontFamily: "Arial, sans-serif", padding: "2rem" };
+
+
+const page: React.CSSProperties = {
+  fontFamily: "Arial, sans-serif",
+  padding: "2rem",
+};
+
 const container: React.CSSProperties = {
-  maxWidth: 600,
+  maxWidth: 1000,
   margin: "0 auto",
   padding: "2rem",
   border: "none",
   boxShadow: "none",
   background: "transparent",
 };
-const title: React.CSSProperties = { textAlign: "center", color: PRIMARY_COLOR, marginBottom: "1.5rem" };
+
+const title: React.CSSProperties = {
+  textAlign: "center",
+  color: PRIMARY_COLOR,
+  marginBottom: "1.5rem",
+};
 
 const sectionTitle: React.CSSProperties = {
   color: PRIMARY_COLOR,
@@ -209,8 +292,26 @@ const sectionTitle: React.CSSProperties = {
   fontSize: "1.05rem",
 };
 
-const field: React.CSSProperties = { marginBottom: "1.5rem" };
-const label: React.CSSProperties = { display: "block", marginBottom: "0.3rem" };
+const twoColumn: React.CSSProperties = {
+  display: "flex",
+  gap: "2rem",
+  alignItems: "flex-start",
+  flexWrap: "wrap",
+};
+
+const column: React.CSSProperties = {
+  flex: 1,
+  minWidth: "280px",
+};
+
+const field: React.CSSProperties = {
+  marginBottom: "1.5rem",
+};
+
+const label: React.CSSProperties = {
+  display: "block",
+  marginBottom: "0.3rem",
+};
 
 const input: React.CSSProperties = {
   width: "100%",
@@ -227,7 +328,11 @@ const errorStyle: React.CSSProperties = {
   marginBottom: "0.8rem",
 };
 
-const buttonsRow: React.CSSProperties = { display: "flex", gap: "1rem", justifyContent: "flex-start" };
+const buttonsRow: React.CSSProperties = {
+  display: "flex",
+  gap: "1rem",
+  justifyContent: "flex-end",
+};
 
 const buttonBase: React.CSSProperties = {
   backgroundColor: PRIMARY_COLOR,

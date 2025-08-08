@@ -31,7 +31,7 @@ function App() {
           <Route element={<PageLayout />}>
             <Route path="/institute" element={<Institut />} />
             <Route path="/institutneuanlage" element={<Institutneuanlage />} />
-            <Route path="/institutbearbeiten/:idname" element={<Institutbearbeiten />} />
+            <Route path="/institutbearbeiten/:institutsname" element={<Institutbearbeiten />} />
             <Route path="/benutzergruppe" element={<Benutzergruppe />} />
             <Route path="/benutzergruppeneuanlage" element={<Benutzergruppeneuanlage />} />
             <Route path="/benutzerbearbeiten/:id" element={<Benutzerbearbeiten />} />
