@@ -8,4 +8,5 @@
     <InstitutsID>Institut darf nicht leer sein</InstitutsID>
     <MandantVorhanden>Ein Mandant ist mit diesem Name vorhanden</MandantVorhanden>
     <IdNameundInsitut>Idname und Institut dürfen nicht leer sein</IdNameundInsitut>
+    <MandantNichtGefunden>Mandant wurde nicht gefunden</MandantNichtGefunden>
 </messages>

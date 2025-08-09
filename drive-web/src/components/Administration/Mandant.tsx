@@ -64,7 +64,7 @@ const MandantenListe: React.FC = () => {
                 <button
                   type="button"
                   style={iconButton}
-                  onClick={() => navigate(`/mandantenneuanlage/${item.idname}`)}
+                  onClick={() => navigate(`/mandantbearbeiten/${item.idname}`)}
                   aria-label="Mandant bearbeiten"
                   title="Mandant bearbeiten"
                 >
@@ -74,7 +74,7 @@ const MandantenListe: React.FC = () => {
                 <button
                   type="button"
                   style={{ ...iconButton, marginLeft: "0.5rem" }}
-                  onClick={() => handleDelete(item.id)}
+                  onClick={() => handleDelete(item.idname)}
                   aria-label="Löschen"
                   title="Löschen"
                 >

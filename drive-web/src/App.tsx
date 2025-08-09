@@ -13,6 +13,7 @@ import Institutneuanlage from "./components/Administration/Institutneuanlage";
 import Institutbearbeiten from "./components/Administration/Institutbearbeiten";
 import Mandant from "./components/Administration/Mandant";
 import Mandantenneuanlage from "./components/Administration/Mandantneuanlage";
+import Mandantbearbeiten from "./components/Administration/Mandantbearbeiten";
 
 import PortalLayout from "./components/PageLayout/PortalLayout";
 import PageLayout from "./components/PageLayout/PageLayout";
@@ -38,6 +39,7 @@ function App() {
             <Route path="/benutzerneuanlage" element={<Benutzerneuanlage />} />
             <Route path="/mandanten" element={<Mandant />} />
             <Route path="/mandantenneuanlage" element={<Mandantenneuanlage />} />
+            <Route path="/mandantbearbeiten/:idname" element={<Mandantbearbeiten/>} />
           </Route>
         </Route>
       </Routes>
