@@ -5,4 +5,7 @@
     <InstitutNichtGefunden>Institutsname wurde nicht gefunden</InstitutNichtGefunden>
     <KeinInstitut>Institut wurde mit dem {0} nicht gefunden</KeinInstitut>
     <InstitutLoesch>Institut {0} wurde gelöscht</InstitutLoesch>
+    <InstitutsID>Institut darf nicht leer sein</InstitutsID>
+    <MandantVorhanden>Ein Mandant ist mit diesem Name vorhanden</MandantVorhanden>
+    <IdNameundInsitut>Idname und Institut dürfen nicht leer sein</IdNameundInsitut>
 </messages>
