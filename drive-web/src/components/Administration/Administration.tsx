@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
+/* Veriler */
 interface Module {
   id: number;
   title: string;
@@ -22,46 +23,61 @@ const modules: Module[] = [
   { id: 5, title: "Wartungsmodus", description: "Admin-Bereich", link: "/schueler-management" },
 ];
 
-const containerStyle: React.CSSProperties = {
-  fontFamily: "Arial, sans-serif",
+/* Stil Nesneleri */
+const pageStyle: React.CSSProperties = {
+  margin: 0,
+  fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif',
+  backgroundColor: "#f3f4f6",
+  color: "#333",
+  minHeight: "100vh",
 };
 
 const mainStyle: React.CSSProperties = {
-  padding: 0,    // Burada padding sıfırlandı
-  margin: 0,     // Margin sıfırlandı
+  maxWidth: "1200px",
+  margin: "2rem auto",
+  padding: "0 1rem",
 };
 
 const gridStyle: React.CSSProperties = {
-  marginTop: "2rem",
   display: "grid",
   gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))",
   gap: "1.5rem",
+  marginTop: "2rem",
 };
 
-const linkStyle: React.CSSProperties = {
-  display: "block",
+const cardStyle: React.CSSProperties = {
+  backgroundColor: "white",
+  borderRadius: "12px",
   padding: "1.5rem",
-  borderRadius: "10px",
-  border: "1px solid #ccc",
+  boxShadow: "0 4px 12px rgba(0, 0, 0, 0.07)",
   textDecoration: "none",
-  color: "#004080",
-  boxShadow: "0 2px 5px rgba(0,0,0,0.1)",
-  transition: "transform 0.2s",
+  color: "#174bd1ff",
+  transition: "transform 0.2s ease-in-out, boxShadow 0.2s ease-in-out",
+  display: "flex",
+  flexDirection: "column",
+  justifyContent: "center",
 };
 
 const titleStyle: React.CSSProperties = {
-  marginBottom: "0.5rem",
+  marginTop: 0,
+  marginBottom: "0.7rem",
+  fontSize: "1.3rem",
+  fontWeight: 700,
 };
 
 const descriptionStyle: React.CSSProperties = {
-  fontSize: "0.9rem",
-  color: "#555",
+  fontSize: "0.95rem",
+  color: "#4b5563",
+  margin: 0,
+  flexGrow: 1,
 };
 
+/* Ana Bileşen */
 function Administration() {
   return (
-    <div style={containerStyle}>
+    <div style={pageStyle}>
       <main style={mainStyle}>
+
         <div style={gridStyle}>
           {modules.map((mod) => (
             <ModuleCard key={mod.id} module={mod} />
@@ -72,6 +88,7 @@ function Administration() {
   );
 }
 
+/* Kart Bileşeni */
 interface ModuleCardProps {
   module: Module;
 }
@@ -80,16 +97,18 @@ function ModuleCard({ module }: ModuleCardProps) {
   const lines = module.description.split(",");
 
   const handleMouseEnter = (e: React.MouseEvent<HTMLAnchorElement>) => {
-    e.currentTarget.style.transform = "scale(1.05)";
+    e.currentTarget.style.transform = "translateY(-6px)";
+    e.currentTarget.style.boxShadow = "0 8px 20px rgba(45, 106, 237, 0.3)";
   };
   const handleMouseLeave = (e: React.MouseEvent<HTMLAnchorElement>) => {
-    e.currentTarget.style.transform = "scale(1)";
+    e.currentTarget.style.transform = "none";
+    e.currentTarget.style.boxShadow = "0 4px 12px rgba(0, 0, 0, 0.07)";
   };
 
   return (
     <Link
       to={module.link}
-      style={linkStyle}
+      style={cardStyle}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
