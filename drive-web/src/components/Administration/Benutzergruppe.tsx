@@ -49,7 +49,7 @@ const BenutzergruppenListe: React.FC = () => {
             <th style={thStyle}>Benutzergruppe</th>
             <th style={thStyle}>Beschreibung</th>
             <th style={thStyle}>Freigaberecht</th>
-            <th style={thStyle}>Action</th>
+            <th style={thStyle}>Aktion</th>
           </tr>
         </thead>
         <tbody>
@@ -71,7 +71,7 @@ const BenutzergruppenListe: React.FC = () => {
 
                 <button
                   type="button"
-                  style={{ ...iconButton, marginLeft: 8 }}
+                  style={{ ...iconButton, marginLeft: "0.5rem" }}
                   onClick={() => handleDelete(item.id)}
                   aria-label="Löschen"
                   title="Löschen"
@@ -81,7 +81,7 @@ const BenutzergruppenListe: React.FC = () => {
 
                 <button
                   type="button"
-                  style={{ ...iconButton, marginLeft: 8 }}
+                  style={{ ...iconButton, marginLeft: "0.5rem" }}
                   onClick={() =>
                     navigate(`/benutzerbearbeiten/${item.id}`, {
                       state: { gruppeName: item.benutzergruppe },
@@ -112,6 +112,8 @@ const BenutzergruppenListe: React.FC = () => {
     </div>
   );
 };
+
+// === Styles (Mandanten sayfasına uygun) ===
 
 const page: React.CSSProperties = {
   fontFamily: "Arial, sans-serif",
@@ -149,25 +151,21 @@ const buttonPrimary: React.CSSProperties = { ...buttonBase };
 const tableStyle: React.CSSProperties = {
   width: "100%",
   borderCollapse: "collapse",
-  backgroundColor: "white",
-  borderRadius: 8,
-  overflow: "hidden",
-  boxShadow: "0 2px 8px rgba(0, 0, 0, 0.05)",
 };
 
 const thStyle: React.CSSProperties = {
   borderBottom: "2px solid #ccc",
   padding: "0.5rem",
   textAlign: "left",
-  backgroundColor: "#f9fafb",
-  color: "#374151",
+  backgroundColor: "#f5f5f5",
+  color: PRIMARY_COLOR,
   fontWeight: 600,
 };
 
 const tdStyle: React.CSSProperties = {
-  borderBottom: "1px solid #e5e7eb",
+  borderBottom: "1px solid #ddd",
   padding: "0.5rem",
-  color: "#4b5563",
+  color: PRIMARY_COLOR,
 };
 
 const iconButton: React.CSSProperties = {
