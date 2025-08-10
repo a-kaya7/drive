@@ -27,7 +27,7 @@ const BenutzergruppeNeuanlage: React.FC = () => {
     setLoading(true);
 
     try {
-      await axios.post("/api/benutzergruppeneuanlage", {
+      await axios.post("http://localhost:8080/api/benutzergruppeneuanlage", {
         benutzergruppe: benutzergruppe,
         beschreibung: beschreibung,
         freigabe: freigabe,
@@ -49,7 +49,7 @@ const BenutzergruppeNeuanlage: React.FC = () => {
   return (
     <div style={page}>
       <div style={container}>
-        <h2 style={title}>Benutzergruppe anlegen</h2>
+        <h2 style={{ ...title, textAlign: "left"}}>Benutzergruppe anlegen</h2>
 
         <form onSubmit={handleSubmit}>
           <div style={field}>
@@ -133,7 +133,7 @@ const input: React.CSSProperties = {
   outline: "none",
 };
 const errorStyle: React.CSSProperties = { color: "red", fontSize: "0.9rem", marginTop: "0.3rem" };
-const buttonsRow: React.CSSProperties = { display: "flex", gap: "1rem", justifyContent: "flex-start" };
+const buttonsRow: React.CSSProperties = { display: "flex", gap: "1rem", justifyContent: "flex-end" };
 const buttonBase: React.CSSProperties = {
   backgroundColor: PRIMARY_COLOR,
   color: "#fff",
