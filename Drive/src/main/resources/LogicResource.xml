@@ -11,4 +11,5 @@
     <MandantNichtGefunden>Mandant wurde nicht gefunden</MandantNichtGefunden>
     <BGruppeVorhanden>Eine Benutzergruppe mit diesem Namen existiert bereits</BGruppeVorhanden>
     <BGruppeNull>Benutzergruppe darf nicht leer sein</BGruppeNull>
+    <BGruppeNichtGefunden>Benutzergruppe wurde nicht gefunden</BGruppeNichtGefunden>
 </messages>
