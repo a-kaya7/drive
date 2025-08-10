@@ -7,7 +7,6 @@ import { FaUserEdit } from "react-icons/fa";
 const PRIMARY_COLOR = "#174bd1ff";
 
 interface Benutzergruppe {
-  id: number;
   benutzergruppe: string;
   beschreibung: string;
   freigabe: boolean;
@@ -23,18 +22,18 @@ const BenutzergruppenListe: React.FC = () => {
 
   const fetchBenutzergruppen = async () => {
     try {
-      const response = await axios.get<Benutzergruppe[]>("/api/benutzergruppen");
+      const response = await axios.get<Benutzergruppe[]>("http://localhost:8080/api/benutzergruppen");
       setBenutzergruppen(response.data);
     } catch (err) {
       console.error("Fehler beim Laden der Benutzergruppen:", err);
     }
   };
 
-  const handleDelete = async (id: number) => {
+  const handleDelete = async (benutzergruppe: string) => {
     if (!window.confirm("Soll diese Benutzergruppe gelöscht werden?")) return;
     try {
-      await axios.delete(`/api/benutzergruppen/${id}`);
-      setBenutzergruppen((prev) => prev.filter((g) => g.id !== id));
+      await axios.delete(`http://localhost:8080/api/benutzergruppe/${benutzergruppe}`);
+      setBenutzergruppen((prev) => prev.filter((g) => g.benutzergruppe !== benutzergruppe));
     } catch (e) {
       alert("Löschen fehlgeschlagen!");
     }
@@ -54,7 +53,7 @@ const BenutzergruppenListe: React.FC = () => {
         </thead>
         <tbody>
           {benutzergruppen.map((item) => (
-            <tr key={item.id}>
+            <tr key={item.benutzergruppe}>
               <td style={tdStyle}>{item.benutzergruppe}</td>
               <td style={tdStyle}>{item.beschreibung}</td>
               <td style={tdStyle}>{item.freigabe ? "Ja" : "Nein"}</td>
@@ -62,7 +61,7 @@ const BenutzergruppenListe: React.FC = () => {
                 <button
                   type="button"
                   style={iconButton}
-                  onClick={() => navigate(`/benutzergruppeneuanlage/${item.id}`)}
+                  onClick={() => navigate(`/benutzergruppebearbeiten/${item.benutzergruppe}`)}
                   aria-label="Benutzergruppe bearbeiten"
                   title="Benutzergruppe bearbeiten"
                 >
@@ -72,7 +71,7 @@ const BenutzergruppenListe: React.FC = () => {
                 <button
                   type="button"
                   style={{ ...iconButton, marginLeft: "0.5rem" }}
-                  onClick={() => handleDelete(item.id)}
+                  onClick={() => handleDelete(item.benutzergruppe)}
                   aria-label="Löschen"
                   title="Löschen"
                 >
@@ -83,7 +82,7 @@ const BenutzergruppenListe: React.FC = () => {
                   type="button"
                   style={{ ...iconButton, marginLeft: "0.5rem" }}
                   onClick={() =>
-                    navigate(`/benutzerbearbeiten/${item.id}`, {
+                    navigate(`/benutzerbearbeiten/${item.benutzergruppe}`, {
                       state: { gruppeName: item.benutzergruppe },
                     })
                   }
@@ -112,8 +111,6 @@ const BenutzergruppenListe: React.FC = () => {
     </div>
   );
 };
-
-// === Styles (Mandanten sayfasına uygun) ===
 
 const page: React.CSSProperties = {
   fontFamily: "Arial, sans-serif",
@@ -165,7 +162,6 @@ const thStyle: React.CSSProperties = {
 const tdStyle: React.CSSProperties = {
   borderBottom: "1px solid #ddd",
   padding: "0.5rem",
-  color: PRIMARY_COLOR,
 };
 
 const iconButton: React.CSSProperties = {

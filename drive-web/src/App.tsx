@@ -8,6 +8,7 @@ import Benutzergruppe from "./components/Administration/Benutzergruppe";
 import Benutzergruppeneuanlage from "./components/Administration/Benutzergruppeneuanlage";
 import Benutzerbearbeiten from "./components/Administration/Benutzerbearbeiten";
 import Benutzerneuanlage from "./components/Administration/Benutzerneuanlage";
+import Benutzergruppebearbeiten from "./components/Administration/Benutzergruppebearbeiten";
 import Institut from "./components/Administration/Institut";
 import Institutneuanlage from "./components/Administration/Institutneuanlage";
 import Institutbearbeiten from "./components/Administration/Institutbearbeiten";
@@ -35,8 +36,9 @@ function App() {
             <Route path="/institutbearbeiten/:institutsname" element={<Institutbearbeiten />} />
             <Route path="/benutzergruppe" element={<Benutzergruppe />} />
             <Route path="/benutzergruppeneuanlage" element={<Benutzergruppeneuanlage />} />
-            <Route path="/benutzerbearbeiten/:id" element={<Benutzerbearbeiten />} />
-            <Route path="/benutzerneuanlage" element={<Benutzerneuanlage />} />
+            <Route path="/benutzergruppebearbeiten/:benutzergruppe" element={<Benutzergruppebearbeiten />} />
+            <Route path="/benutzerbearbeiten/:benutzergruppe" element={<Benutzerbearbeiten />} />
+            <Route path="/benutzerneuanlage/:benutzergruppe" element={<Benutzerneuanlage />} />
             <Route path="/mandanten" element={<Mandant />} />
             <Route path="/mandantenneuanlage" element={<Mandantenneuanlage />} />
             <Route path="/mandantbearbeiten/:idname" element={<Mandantbearbeiten/>} />
