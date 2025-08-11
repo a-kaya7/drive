@@ -12,4 +12,9 @@
     <BGruppeVorhanden>Eine Benutzergruppe mit diesem Namen existiert bereits</BGruppeVorhanden>
     <BGruppeNull>Benutzergruppe darf nicht leer sein</BGruppeNull>
     <BGruppeNichtGefunden>Benutzergruppe wurde nicht gefunden</BGruppeNichtGefunden>
+    <KeinBGruppeID>Benutzergruppe wurde mit ID nicht gefunden</KeinBGruppeID>
+    <KeinBenutzer>Benutzer wurde nicht gefunden</KeinBenutzer>
+    <BenutzerVorhanden>Benutzer ist mit dieser Benutzerkennung vorhanden</BenutzerVorhanden>
+    <PasswortMisMatch>Passwort stimmt nicht mit der Passwortwiederhlung überein.</PasswortMisMatch>
+    <PasswortAb> Das Passwort ist erst ab dem {0} gültig.");</PasswortAb>
 </messages>
