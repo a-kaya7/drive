@@ -1,9 +1,9 @@
 package net.drive.model.dto.administration.allgemein;
 
 import java.time.LocalDate;
+
 import java.util.UUID;
 
-import net.drive.model.entities.administration.allgemein.Benutzergruppe;
 
 
 public record BenutzerDTO(
@@ -21,7 +21,8 @@ public record BenutzerDTO(
 		int zeitraumPasswort,
 		boolean passwortAenderung,
 		boolean mfa,
-		String benutzergruppe
+		String benutzergruppe,
+		String mandant
 		
 		) {
 

@@ -8,7 +8,8 @@ public record BenutzerListDTO(
 		String benutzerkennung,
 		String vorname,
 		LocalDate benutzerBis,
-		String benutzergruppe
+		String benutzergruppe,
+		String mandant
 		) {
 
 }

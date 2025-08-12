@@ -17,4 +17,5 @@
     <BenutzerVorhanden>Benutzer ist mit dieser Benutzerkennung vorhanden</BenutzerVorhanden>
     <PasswortMisMatch>Passwort stimmt nicht mit der Passwortwiederhlung überein.</PasswortMisMatch>
     <PasswortAb> Das Passwort ist erst ab dem {0} gültig.");</PasswortAb>
+    <KeinMandantID>Mandant wurde mit ID nicht gefunden</KeinMandantID>
 </messages>

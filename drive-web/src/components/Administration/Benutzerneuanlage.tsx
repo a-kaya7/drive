@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import type { FormEvent } from "react";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
@@ -24,10 +24,24 @@ const BenutzerNeuanlage: React.FC = () => {
   const [zeitraumPasswort, setZeitraumPasswort] = useState<number>(0);
   const [passwortAenderung, setPasswortAenderung] = useState(false);
   const [mfa, setMfa] = useState(false);
+  const [mandant, setMandant] = useState("");
 
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const [mandantListe, setMandantListe] = useState<Array<{id: string; idname: string }>>([]);
   const navigate = useNavigate();
+
+  useEffect(() => {
+      const fetchMandanten = async () => {
+        try {
+          const response = await axios.get("http://localhost:8080/api/mandantenlist");
+          setMandantListe(response.data);
+        } catch (err) {
+          console.error("Fehler beim Laden der Institute:", err);
+        }
+      };
+      fetchMandanten();
+    }, []);
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -50,6 +64,7 @@ const BenutzerNeuanlage: React.FC = () => {
         passwortAenderung,
         mfa,
         benutzergruppe,
+        mandant: mandant,
       });
       navigate(`/benutzerbearbeiten/${benutzergruppe}`);
     } catch (error: any) {
@@ -154,6 +169,26 @@ const BenutzerNeuanlage: React.FC = () => {
                 MFA-Authentifizierung
               </label>
             </div>
+            <div style={field}>
+                 <h2></h2>
+                <label htmlFor="mandant-select" style={label}>
+                  Mandant auswählen <span style={{ color: "red" }}>*</span>
+                </label>
+                <select
+                  id="institut-select"
+                  value={mandant}
+                  onChange={(e) => setMandant(e.target.value)}
+                  style={{ ...input, padding: "0.5rem" }}
+                  required
+                >
+                  <option value="">Bitte wählen</option>
+                  {mandantListe.map((inst) => (
+                    <option key={inst.id.toString()} value={inst.idname.toString()}>
+                      {inst.idname}
+                    </option>
+                  ))}
+                </select>
+              </div>
           </div>
 
           <div style={{ gridColumn: "1 / span 2", ...buttonsRow }}>
@@ -183,5 +218,6 @@ const buttonBase: React.CSSProperties = { backgroundColor: PRIMARY_COLOR, color:
 const buttonPrimary: React.CSSProperties = { ...buttonBase };
 const buttonSecondary: React.CSSProperties = { ...buttonBase };
 const formGrid: React.CSSProperties = { display: "grid", gridTemplateColumns: "1fr 1fr", gap: "2rem" };
+
 
 export default BenutzerNeuanlage;
