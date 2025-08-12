@@ -68,5 +68,9 @@ public class Benutzer {
 	@ManyToOne
 	@JoinColumn(name = "benutzergruppe")
 	private Benutzergruppe benutzergruppe;
+	
+	@ManyToOne
+	@JoinColumn(name = "mandant")
+	private Mandant mandant;
 
 }

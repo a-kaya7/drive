@@ -13,7 +13,7 @@ interface User {
   vorname?: string;
   nachname?: string;
   benutzerBis?: string;
-  mandantName?: string;
+  mandant?: string;
   benutzergruppe?: string;
 }
 
@@ -62,7 +62,7 @@ const BenutzerBearbeiten: React.FC = () => {
         `${u.vorname ?? ""} ${u.nachname ?? ""}`
           .toLowerCase()
           .includes(q) ||
-        (u.mandantName ?? "").toLowerCase().includes(q)
+        (u.mandant ?? "").toLowerCase().includes(q)
     );
   }, [users, eingabe]);
 
@@ -177,7 +177,7 @@ const BenutzerBearbeiten: React.FC = () => {
                         {(u.vorname || "") + " " + (u.nachname || "")}
                       </td>
                       <td style={tdStyle}>{u.benutzerBis || "-"}</td>
-                      <td style={tdStyle}>{u.mandantName || "-"}</td>
+                      <td style={tdStyle}>{u.mandant || "-"}</td>
                       <td style={tdStyle}>{u.benutzergruppe || "-"}</td>
                       <td style={tdStyle}>
                         <button
