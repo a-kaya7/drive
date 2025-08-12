@@ -1,6 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 import Login from "./components/Login/Login";
+import Logout from "./components/Login/Logout";
 import HomePage from "./components/Homepage/Homepage";
 import Administration from "./components/Administration/Administration";
 import AdministrationAllgemein from "./components/Administration/AdministrationAllgemein";
@@ -24,6 +25,7 @@ function App() {
     <Router>
       <Routes>
         <Route path="/login" element={<Login />} />
+        <Route path="/portal/*" element={<Logout><PortalLayout/></Logout>}/>
 
         <Route element={<PortalLayout />}>
           <Route path="/home" element={<HomePage />} />
