@@ -1,8 +1,9 @@
 import React, { useEffect, useMemo, useState } from "react";
-import type { FormEvent, ChangeEvent} from "react";
+import type { FormEvent, ChangeEvent } from "react";
 import axios from "axios";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
-import { FiEdit, FiTrash2 } from "react-icons/fi";
+import { FaUserEdit } from "react-icons/fa";  // <-- buraya ekledim
+import { FiTrash2 } from "react-icons/fi";
 
 const PRIMARY_COLOR = "#174bd1ff";
 
@@ -13,6 +14,7 @@ interface User {
   nachname?: string;
   benutzerBis?: string;
   mandantName?: string;
+  benutzergruppe?: string;
 }
 
 interface Msg {
@@ -21,7 +23,7 @@ interface Msg {
 }
 
 const BenutzerBearbeiten: React.FC = () => {
-  const { Id } = useParams<{ Id: string }>();
+  const { benutzergruppe } = useParams<{ benutzergruppe: string }>();
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -37,7 +39,9 @@ const BenutzerBearbeiten: React.FC = () => {
     const fetchData = async () => {
       setLoading(true);
       try {
-        const { data } = await axios.get<User[]>(`/api/benutzergruppen/${Id}`);
+        const { data } = await axios.get<User[]>(
+          "http://localhost:8080/api/benutzerlist"
+        );
         setUsers(data);
       } catch (e) {
         setMsg({ text: "Fehler beim Laden der Benutzerdaten.", type: "error" });
@@ -47,7 +51,7 @@ const BenutzerBearbeiten: React.FC = () => {
     };
 
     fetchData();
-  }, [Id]);
+  }, [benutzergruppe]);
 
   const filteredUsers = useMemo(() => {
     const q = eingabe.trim().toLowerCase();
@@ -55,7 +59,9 @@ const BenutzerBearbeiten: React.FC = () => {
     return users.filter(
       (u) =>
         u.benutzerkennung.toLowerCase().includes(q) ||
-        `${u.vorname ?? ""} ${u.nachname ?? ""}`.toLowerCase().includes(q) ||
+        `${u.vorname ?? ""} ${u.nachname ?? ""}`
+          .toLowerCase()
+          .includes(q) ||
         (u.mandantName ?? "").toLowerCase().includes(q)
     );
   }, [users, eingabe]);
@@ -89,10 +95,9 @@ const BenutzerBearbeiten: React.FC = () => {
   return (
     <div style={page}>
       <div style={container}>
-        <h2 style={title}>Benutzer bearbeiten</h2>
+        <h2 style={{ ...title, textAlign: "left" }}>Benutzer bearbeiten</h2>
 
         <section style={section}>
-          <h3 style={sectionHeader}>Auswahl Benutzer</h3>
           <div style={{ marginBottom: "1.2rem" }}>
             <strong>Benutzergruppe:</strong>{" "}
             <span style={{ color: PRIMARY_COLOR }}>{gruppeName || "(unbekannt)"}</span>
@@ -100,30 +105,37 @@ const BenutzerBearbeiten: React.FC = () => {
         </section>
 
         <section style={section}>
-          <h3 style={sectionHeader}>Benutzer bearbeiten</h3>
-
           <form onSubmit={handleSubmit}>
             <div style={field}>
-              <label style={label}>
-                Benutzer bearbeiten <span style={{ color: "red" }}>*</span>
-              </label>
+              <label style={label}>Benutzer suchen</label>
               <input
                 type="text"
                 value={eingabe}
-                onChange={(e: ChangeEvent<HTMLInputElement>) => setEingabe(e.target.value)}
+                onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                  setEingabe(e.target.value)
+                }
                 style={input}
-                placeholder="Suchen / Eingabe..."
+                placeholder="Suchen..."
               />
             </div>
 
             {msg.text && (
-              <div style={{ color: msg.type === "error" ? "red" : "green", marginBottom: "1.5rem" }}>
+              <div
+                style={{
+                  color: msg.type === "error" ? "red" : "green",
+                  marginBottom: "1.5rem",
+                }}
+              >
                 {msg.text}
               </div>
             )}
 
             <div style={buttonsRow}>
-              <button type="button" style={buttonPrimary} onClick={() => navigate("/benutzerneuanlage")}>
+              <button
+                type="button"
+                style={buttonPrimary}
+                onClick={() => navigate(`/benutzerneuanlage/${benutzergruppe}`)}
+              >
                 Neuanlage
               </button>
               <button type="button" style={buttonPrimary} onClick={() => navigate(-1)}>
@@ -146,13 +158,14 @@ const BenutzerBearbeiten: React.FC = () => {
                   <th style={thStyle}>Name</th>
                   <th style={thStyle}>Benutzer bis</th>
                   <th style={thStyle}>Mandant</th>
+                  <th style={thStyle}>Benutzergruppe</th>
                   <th style={thStyle}>Aktion</th>
                 </tr>
               </thead>
               <tbody>
                 {filteredUsers.length === 0 ? (
                   <tr>
-                    <td colSpan={5} style={{ textAlign: "center", padding: "1rem" }}>
+                    <td colSpan={6} style={{ textAlign: "center", padding: "1rem" }}>
                       Keine Daten vorhanden.
                     </td>
                   </tr>
@@ -165,15 +178,16 @@ const BenutzerBearbeiten: React.FC = () => {
                       </td>
                       <td style={tdStyle}>{u.benutzerBis || "-"}</td>
                       <td style={tdStyle}>{u.mandantName || "-"}</td>
+                      <td style={tdStyle}>{u.benutzergruppe || "-"}</td>
                       <td style={tdStyle}>
                         <button
                           type="button"
                           style={iconButton}
                           onClick={() => handleEditUser(u.id)}
                           aria-label="Bearbeiten"
-                          title="Bearbeiten"
+                          title="Benutzer bearbeiten"
                         >
-                          <FiEdit size={18} />
+                          <FaUserEdit size={18} />
                         </button>
                         <button
                           type="button"

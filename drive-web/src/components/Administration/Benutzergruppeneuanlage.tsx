@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect} from "react";
 import type { FormEvent } from "react";
 import axios, { AxiosError } from "axios";
 import { useNavigate } from "react-router-dom";
@@ -9,11 +9,25 @@ const BenutzergruppeNeuanlage: React.FC = () => {
   const [benutzergruppe, setBenutzergruppe] = useState<string>("");
   const [beschreibung, setBeschreibung] = useState<string>("");
   const [freigabe, setFreigabe] = useState<boolean>(false);
+  const [mandant, setMandant] = useState("");
   const [error, setError] = useState<string>("");
   const [message, setMessage] = useState<{ text: string; type: string }>({ text: "", type: "" });
   const [loading, setLoading] = useState<boolean>(false);
+  const [mandantListe, setMandantListe] = useState<Array<{id: string; idname: string }>>([]);
 
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchMandanten = async () => {
+      try {
+        const response = await axios.get("http://localhost:8080/api/mandantenlist");
+        setMandantListe(response.data);
+      } catch (err) {
+        console.error("Fehler beim Laden der Institute:", err);
+      }
+    };
+    fetchMandanten();
+  }, []);
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -31,6 +45,7 @@ const BenutzergruppeNeuanlage: React.FC = () => {
         benutzergruppe: benutzergruppe,
         beschreibung: beschreibung,
         freigabe: freigabe,
+        mandant: mandant,
       });
 
       setMessage({ text: "Benutzergruppe erfolgreich gespeichert!", type: "success" });
@@ -86,6 +101,26 @@ const BenutzergruppeNeuanlage: React.FC = () => {
               Freigaberecht
             </label>
           </div>
+
+          <div style={field}>
+                <label htmlFor="mandant-select" style={label}>
+                  Mandant auswählen <span style={{ color: "red" }}>*</span>
+                </label>
+                <select
+                  id="institut-select"
+                  value={mandant}
+                  onChange={(e) => setMandant(e.target.value)}
+                  style={{ ...input, padding: "0.5rem" }}
+                  required
+                >
+                  <option value="">Bitte wählen</option>
+                  {mandantListe.map((inst) => (
+                    <option key={inst.id.toString()} value={inst.idname.toString()}>
+                      {inst.idname}
+                    </option>
+                  ))}
+                </select>
+              </div>
 
           {message.text && (
             <div
