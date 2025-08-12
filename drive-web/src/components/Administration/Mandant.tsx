@@ -58,7 +58,7 @@ const MandantenListe: React.FC = () => {
             <tr key={item.idname}>
               <td style={tdStyle}>{item.idname}</td>
               <td style={tdStyle}>{item.beschreibung}</td>
-              <td style={tdStyle}>{item.local}</td>
+              <td style={tdStyle}>{item.locale}</td>
               <td style={tdStyle}>{item.telefon}</td>
               <td style={tdStyle}>
                 <button

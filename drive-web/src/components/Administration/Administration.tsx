@@ -14,7 +14,7 @@ const modules: Module[] = [
     id: 1,
     title: "Allgemein",
     description:
-      "Institut, Mandanten/Gruppe, Mandant, Benutzer/Rollen, Organisationseinheiten, Systemfunktion, Protokolierung, Scorecard, System ",
+      "Institut, Mandant, Benutzer/Rollen, Organisationseinheiten, Systemfunktion, Protokolierung, Scorecard, System ",
     link: "/administrationallgemein",
   },
   { id: 2, title: "Recht", description: "Benutzergruppe verwalten, test", link: "/benutzergruppe" },

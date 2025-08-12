@@ -6,7 +6,7 @@ public record BenutzergruppeDTO(
 		UUID id,
 		String benutzergruppe,
 		String beschreibung,
-		boolean freigabe
+		boolean freigabe,
+		String mandant
 		) {
-
 }

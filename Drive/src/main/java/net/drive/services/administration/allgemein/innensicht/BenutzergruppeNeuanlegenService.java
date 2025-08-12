@@ -5,18 +5,23 @@ import org.springframework.stereotype.Service;
 import net.drive.config.LogicResource;
 import net.drive.model.dto.administration.allgemein.BenutzergruppeDTO;
 import net.drive.model.entities.administration.allgemein.Benutzergruppe;
+import net.drive.model.entities.administration.allgemein.Mandant;
 import net.drive.repository.administration.allgemein.IBenutzergruppeRepository;
+import net.drive.repository.administration.allgemein.IMandantRepository;
 import net.drive.services.administration.allgemein.aussensicht.IBenutzergruppeNeuanlegenService;
 
 @Service
 public class BenutzergruppeNeuanlegenService implements IBenutzergruppeNeuanlegenService {
 
 	private final IBenutzergruppeRepository bRepo;
+	private final IMandantRepository mandantRepo;
 	private final LogicResource logicResource;
 
-	public BenutzergruppeNeuanlegenService(IBenutzergruppeRepository bRepo, LogicResource logicResource) {
+	public BenutzergruppeNeuanlegenService(IBenutzergruppeRepository bRepo, LogicResource logicResource,
+			IMandantRepository mandantRepo) {
 		this.bRepo = bRepo;
 		this.logicResource = logicResource;
+		this.mandantRepo = mandantRepo;
 	}
 
 	@Override
@@ -37,19 +42,27 @@ public class BenutzergruppeNeuanlegenService implements IBenutzergruppeNeuanlege
 	}
 
 	public Benutzergruppe mapToEntity(BenutzergruppeDTO bGruppe) {
-
+        
+		Mandant mandant = mandantRepo.findMandantByIdname(bGruppe.mandant())
+				.orElseThrow(() -> new IllegalArgumentException(logicResource.getMessage("MandantID")));
 		Benutzergruppe benutzerGruppe = new Benutzergruppe();
 		benutzerGruppe.setId(bGruppe.id());
 		benutzerGruppe.setBenutzergruppe(bGruppe.benutzergruppe());
 		benutzerGruppe.setBeschreibung(bGruppe.beschreibung());
 		benutzerGruppe.setFreigabe(bGruppe.freigabe());
+		benutzerGruppe.setMandant(mandant);
 		return benutzerGruppe;
 
 	}
 
 	public BenutzergruppeDTO mapToDto(Benutzergruppe bGruppe) {
-		return new BenutzergruppeDTO(bGruppe.getId(), bGruppe.getBenutzergruppe(), bGruppe.getBeschreibung(),
-				bGruppe.isFreigabe());
+		return new BenutzergruppeDTO(
+				bGruppe.getId(), 
+				bGruppe.getBenutzergruppe(), 
+				bGruppe.getBeschreibung(),
+				bGruppe.isFreigabe(),
+				bGruppe.getMandant() != null ? bGruppe.getMandant().getIdname() : null
+				);
 	}
 
 }

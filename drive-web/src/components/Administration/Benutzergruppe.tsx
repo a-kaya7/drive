@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate} from "react-router-dom";
 import { FiEdit, FiTrash2 } from "react-icons/fi";
 import { FaUserEdit } from "react-icons/fa";
 
@@ -10,6 +10,7 @@ interface Benutzergruppe {
   benutzergruppe: string;
   beschreibung: string;
   freigabe: boolean;
+  mandant?: string;
 }
 
 const BenutzergruppenListe: React.FC = () => {
@@ -48,6 +49,7 @@ const BenutzergruppenListe: React.FC = () => {
             <th style={thStyle}>Benutzergruppe</th>
             <th style={thStyle}>Beschreibung</th>
             <th style={thStyle}>Freigaberecht</th>
+            <th style={thStyle}>Mandant</th>
             <th style={thStyle}>Aktion</th>
           </tr>
         </thead>
@@ -57,6 +59,7 @@ const BenutzergruppenListe: React.FC = () => {
               <td style={tdStyle}>{item.benutzergruppe}</td>
               <td style={tdStyle}>{item.beschreibung}</td>
               <td style={tdStyle}>{item.freigabe ? "Ja" : "Nein"}</td>
+              <td style={tdStyle}>{item.mandant}</td>
               <td style={tdStyle}>
                 <button
                   type="button"
