@@ -2,28 +2,23 @@ import { NavLink, Outlet, useLocation } from "react-router-dom";
 
 const PRIMARY_COLOR = "#174bd1ff";
 
-type Action = {
-  name: string;
-  path: string;
-};
+const actions = [
+  { name: "Institut", path: "/institute" },
+  { name: "Mandanten", path: "/mandanten" },
+  { name: "Benutzer/Rollen", path: "/benutzergruppe" },
+  { name: "Organisationseinheiten", path: "/organisation" },
+  { name: "Systemfunktion", path: "/systemfunktion" },
+  { name: "Protokolierung", path: "/protokolierung" },
+  { name: "Scorecard", path: "/scorecard" },
+  { name: "System", path: "/system" },
+];
 
-const Layout = () => {
+export default function PageLayout() {
   const location = useLocation();
 
-  const actions: Action[] = [
-    { name: "Institut", path: "/institute" },
-    { name: "Mandanten", path: "/mandanten" },
-    { name: "Benutzer/Rollen", path: "/benutzergruppe" },
-    { name: "Organisationseinheiten", path: "/organisation" },
-    { name: "Systemfunktion", path: "/systemfunktion" },
-    { name: "Protokolierung", path: "/protokolierung" },
-    { name: "Scorecard", path: "/scorecard" },
-    { name: "System", path: "/system" },
-  ];
-
   return (
-    <div style={{ display: "flex", height: "100vh" }}>
-      <div
+    <div style={{ display: "flex", height: "calc(100vh - 96px)" }}>
+      <aside
         style={{
           width: 250,
           backgroundColor: "#f4f4f4",
@@ -33,15 +28,14 @@ const Layout = () => {
       >
         <h3 style={{ color: PRIMARY_COLOR }}>Administration</h3>
         <ul style={{ listStyle: "none", padding: 0 }}>
-          {actions.map((action) => {
+          {actions.map(({ name, path }) => {
             const isActive =
-              location.pathname === action.path ||
-              location.pathname.startsWith(action.path + "/");
+              location.pathname === path || location.pathname.startsWith(path + "/");
 
             return (
-              <li key={action.name} style={{ margin: "10px 0" }}>
+              <li key={name} style={{ margin: "10px 0" }}>
                 <NavLink
-                  to={action.path}
+                  to={path}
                   style={{
                     textDecoration: "none",
                     color: isActive ? PRIMARY_COLOR : "#333",
@@ -49,19 +43,17 @@ const Layout = () => {
                     transition: "color 0.2s",
                   }}
                 >
-                  {action.name}
+                  {name}
                 </NavLink>
               </li>
             );
           })}
         </ul>
-      </div>
+      </aside>
 
-      <div style={{ flex: 1, padding: 0, margin: 0 }}>
+      <main style={{ flex: 1, padding: 20, overflowY: "auto" }}>
         <Outlet />
-      </div>
+      </main>
     </div>
   );
-};
-
-export default Layout;
+}

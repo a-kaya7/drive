@@ -11,6 +11,12 @@ body {
   justify-content: center;
   align-items: center;
   height: 100vh;
+  width: 100vw;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: #f3f4f6;
+  margin: 0;
 }
 
 .login-form {
@@ -41,6 +47,8 @@ body {
   border: 1px solid #ccc;
   border-radius: 8px;
   font-size: 1rem;
+  max-width: 200px;
+  width: 100%;
 }
 
 .login-form button {
@@ -53,6 +61,8 @@ body {
   cursor: pointer;
   font-size: 1rem;
   transition: background-color 0.2s ease-in-out;
+  max-width: 120px;
+  width: 100%;
 }
 
 .login-form button:hover {
@@ -62,6 +72,7 @@ body {
 .login-form button:disabled {
   background-color: #9ca3af;
   cursor: not-allowed;
+  
 }
 
 .message {
@@ -76,4 +87,99 @@ body {
 
 .message.error {
   color: red;
+}
+/* Passwort vergessen linki */
+.forgot-password {
+  font-size: 0.85rem;
+  color: #2563eb; /* Mavi */
+  text-decoration: underline;
+  cursor: pointer;
+  text-align: right;
+  margin-top: 0.5rem;
+}
+
+/* Popup arka plan */
+.popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+/* Popup kutusu */
+.popup {
+  background: #fff;
+  padding: 1rem;
+  border-radius: 12px;
+  max-width: 300px;
+  width: 100%;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+  animation: fadeIn 0.2s ease-in-out;
+}
+
+.popup h3 {
+  margin-top: 0;
+  margin-bottom: 1rem;
+  font-size: 1.2rem;
+  color: #333;
+}
+
+/* Popup içindeki inputlar */
+.popup input,
+.popup textarea {
+  width: 100%;
+  margin-bottom: 0.7rem;
+  padding: 0.6rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  box-sizing: border-box;
+}
+
+.popup textarea {
+  resize: vertical;
+}
+
+/* Popup butonları */
+.popup-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+}
+
+.popup-actions button {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+.popup-actions button[type="submit"] {
+  background-color: #2563eb;
+  color: white;
+}
+
+.popup-actions button[type="submit"]:hover {
+  background-color: #1d4ed8;
+}
+
+.popup-actions button[type="button"] {
+  background-color: #ccc;
+}
+
+.popup-actions button[type="button"]:hover {
+  background-color: #aaa;
+}
+
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.9); }
+  to { opacity: 1; transform: scale(1); }
 }

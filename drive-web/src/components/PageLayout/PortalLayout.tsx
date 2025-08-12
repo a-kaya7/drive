@@ -6,13 +6,15 @@ export default function PortalLayout() {
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    // Çıkış işlemleri (token temizleme vs.)
-    navigate("/login");
+    
+    localStorage.removeItem("authToken");
+    sessionStorage.removeItem("authToken");
+    navigate("/login", {replace: true});
   };
 
   return (
     <div>
-      {/* NAVBAR */}
+      {/* Navbar */}
       <nav style={topNav}>
         <div style={left}>
           <span style={brand}>Fahrschule Portal</span>
@@ -24,13 +26,8 @@ export default function PortalLayout() {
         </div>
       </nav>
 
-      {/* Üst modül barı */}
       <MainModulesNav lang={lang} />
-
-      {/* İçerik */}
-      <div style={{ padding: 0 }}>
-        <Outlet context={{ lang }} />
-      </div>
+      <Outlet />
     </div>
   );
 }

@@ -1,5 +1,4 @@
-
-import { useState, type ChangeEvent, type FormEvent } from "react";
+import { useState, type FormEvent } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./Login.css";
@@ -11,10 +10,15 @@ interface Message {
 
 function Login() {
   const navigate = useNavigate();
-  const [userName, setUserName] = useState<string>("");
-  const [passwort, setPasswort] = useState<string>("");
-  const [loading, setLoading] = useState<boolean>(false);
+  const [benutzerkennung, setBenutzerkennung] = useState("");
+  const [passwort, setPasswort] = useState("");
+  const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState<Message>({ text: "", type: "" });
+
+  // Popup  state
+  const [showPopup, setShowPopup] = useState(false);
+  const [resetEmail, setResetEmail] = useState("");
+  const [resetMessage, setResetMessage] = useState("");
 
   const handleLogin = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -22,9 +26,9 @@ function Login() {
     setMessage({ text: "", type: "" });
 
     try {
-      const response = await axios.post("/api/login", {
-        userName: userName,
-        passwort: passwort,
+      const response = await axios.post("http://localhost:8080/api/login", {
+        benutzerkennung,
+        passwort,
       });
 
       navigate("/home");
@@ -33,7 +37,7 @@ function Login() {
         text: "Login erfolgreich! Token: " + response.data.token,
         type: "success",
       });
-    } catch (err) {
+    } catch {
       setMessage({
         text: "Login fehlgeschlagen. Bitte überprüfen Sie Ihre Eingaben.",
         type: "error",
@@ -43,24 +47,24 @@ function Login() {
     }
   };
 
-  const handleUserNameChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setUserName(e.target.value);
-  };
-
-  const handlePasswortChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setPasswort(e.target.value);
+  const handleResetSubmit = (e: FormEvent) => {
+    e.preventDefault();
+    console.log("E-Mail:", resetEmail);
+    console.log("Nachricht:", resetMessage);
+    setShowPopup(false);
   };
 
   return (
     <div className="login-container">
       <form className="login-form" onSubmit={handleLogin}>
-        <h2>Anmeldung</h2>
+        <h1>Fahrschule Portal</h1>
+        <h3>Anmeldung</h3>
 
         <label>Benutzername</label>
         <input
           type="text"
-          value={userName}
-          onChange={handleUserNameChange}
+          value={benutzerkennung}
+          onChange={(e) => setBenutzerkennung(e.target.value)}
           required
         />
 
@@ -68,7 +72,7 @@ function Login() {
         <input
           type="password"
           value={passwort}
-          onChange={handlePasswortChange}
+          onChange={(e) => setPasswort(e.target.value)}
           required
         />
 
@@ -76,10 +80,49 @@ function Login() {
           {loading ? "Wird geprüft..." : "Login"}
         </button>
 
+        {/* Passwort vergessen linki */}
+        <p
+          className="forgot-password"
+          onClick={() => setShowPopup(true)}
+        >
+          Passwort vergessen?
+        </p>
+
         {message.text && (
           <p className={`message ${message.type}`}>{message.text}</p>
         )}
       </form>
+
+      {/* Popup */}
+      {showPopup && (
+        <div className="popup-overlay">
+          <div className="popup">
+            <h3>Passwort zurücksetzen</h3>
+            <form onSubmit={handleResetSubmit}>
+              <input
+                type="email"
+                placeholder="E-Mail"
+                value={resetEmail}
+                onChange={(e) => setResetEmail(e.target.value)}
+                required
+              />
+              <textarea
+                placeholder="Ihre Nachricht an den Admin"
+                value={resetMessage}
+                onChange={(e) => setResetMessage(e.target.value)}
+                rows={4}
+                required
+              />
+              <div className="popup-actions">
+                <button type="button" onClick={() => setShowPopup(false)}>
+                  Abbrechen
+                </button>
+                <button type="submit">Senden</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
