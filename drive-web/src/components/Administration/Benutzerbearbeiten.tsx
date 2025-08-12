@@ -78,8 +78,8 @@ const BenutzerBearbeiten: React.FC = () => {
     setMsg({ text: "Neuanlage erfolgreich ausgeführt (Dummy).", type: "success" });
   };
 
-  const handleEditUser = (userId: number) => {
-    navigate(`/benutzer/edit/${userId}`);
+  const handleEditUser = (benutzerkennung: string) => {
+    navigate(`/benutzerbearbeiten2/${benutzerkennung}`);
   };
 
   const handleDeleteUser = async (userId: number) => {
@@ -183,7 +183,7 @@ const BenutzerBearbeiten: React.FC = () => {
                         <button
                           type="button"
                           style={iconButton}
-                          onClick={() => handleEditUser(u.id)}
+                          onClick={() => handleEditUser(u.benutzerkennung)}
                           aria-label="Bearbeiten"
                           title="Benutzer bearbeiten"
                         >
