@@ -1,11 +1,14 @@
 package net.drive.controller.administration.allgemein;
 
-import org.springframework.security.core.Authentication;
+
+
+
+import java.util.Map;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,31 +16,51 @@ import org.springframework.web.bind.annotation.RestController;
 
 import net.drive.model.dto.administration.allgemein.LoginDTO;
 
+import net.drive.model.dto.administration.allgemein.PasswortWechselDTO;
+
+import net.drive.services.administration.allgemein.innensicht.LoginService;
 
 @RestController
 @RequestMapping("/api")
 public class LoginController {
 	
-	 private final AuthenticationManager authenticationManager;
 
-	    public LoginController(AuthenticationManager authenticationManager) {
-	        this.authenticationManager = authenticationManager;
-	    }
-	
-	@PostMapping("/login")
-	public ResponseEntity<String> login(@RequestBody LoginDTO loginDto){
-		try {
-            Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                    loginDto.benutzerkennung(),
-                    loginDto.passwort()
-                )
-            );
-            return ResponseEntity.ok("");
+    
+    private final LoginService loginService;
+    public LoginController(LoginService loginService){
+    	this.loginService = loginService;
+    }
 
-	} catch (BadCredentialsException e) {
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                .body("");
-}
-	}
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@RequestBody LoginDTO loginDto) {
+        try {
+        	return ResponseEntity.ok(loginService.login(loginDto));
+        } catch(BadCredentialsException e) {
+        	 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
+        }
+    }
+
+    @PostMapping("/benutzer/passwortWechsel")
+    public ResponseEntity<?> passwortWechsel(@RequestBody PasswortWechselDTO passwortWDto) {
+    	 try {
+             return ResponseEntity.ok(loginService.passwortWechsel(passwortWDto));
+         } catch (IllegalArgumentException e) {
+             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+         }
+    }
+
+    @PostMapping("/login/mfa")
+    public ResponseEntity<?> verifyMfa(@RequestBody Map<String, Object> body) {
+    	try {
+            String benutzerkennung = (String) body.get("benutzerkennung");
+            int code = Integer.parseInt(body.get("mfaCode").toString());
+            return ResponseEntity.ok(Map.of("token", loginService.verifyMfa(benutzerkennung, code)));
+        } catch (NumberFormatException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("MFA ist ungültig");
+        } catch (BadCredentialsException e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
+    }
 }
