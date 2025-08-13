@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import type { FormEvent, ChangeEvent } from "react";
 import axios from "axios";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
-import { FaUserEdit } from "react-icons/fa";  // <-- buraya ekledim
+import { FaUserEdit } from "react-icons/fa"; 
 import { FiTrash2 } from "react-icons/fi";
 
 const PRIMARY_COLOR = "#174bd1ff";
@@ -82,11 +82,11 @@ const BenutzerBearbeiten: React.FC = () => {
     navigate(`/benutzerbearbeiten2/${benutzerkennung}`);
   };
 
-  const handleDeleteUser = async (userId: number) => {
+  const handleDeleteUser = async (benutzerkennung: string) => {
     if (!window.confirm("Soll dieser Benutzer gelöscht werden?")) return;
     try {
-      await axios.delete(`/api/benutzer/${userId}`);
-      setUsers((prev) => prev.filter((u) => u.id !== userId));
+      await axios.delete(`http://localhost:8080/api/benutzerloeschen/${benutzerkennung}`);
+      setUsers((prev) => prev.filter((u) => u.benutzerkennung !== benutzerkennung));
     } catch (e) {
       alert("Löschen fehlgeschlagen!");
     }
@@ -192,7 +192,7 @@ const BenutzerBearbeiten: React.FC = () => {
                         <button
                           type="button"
                           style={{ ...iconButton, marginLeft: "0.5rem" }}
-                          onClick={() => handleDeleteUser(u.id)}
+                          onClick={() => handleDeleteUser(u.benutzerkennung)}
                           aria-label="Löschen"
                           title="Löschen"
                         >
