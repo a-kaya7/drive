@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import jakarta.servlet.http.HttpSession;
 import net.drive.model.dto.administration.allgemein.LoginDTO;
 
 import net.drive.model.dto.administration.allgemein.PasswortWechselDTO;
@@ -32,14 +33,17 @@ public class LoginController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody LoginDTO loginDto) {
+    public ResponseEntity<?> login(@RequestBody LoginDTO loginDto, HttpSession session) {
         try {
-        	return ResponseEntity.ok(loginService.login(loginDto));
+        	 Map<String, Object> loginResult = loginService.login(loginDto, session);
+        	return ResponseEntity.ok(loginResult);
         } catch(BadCredentialsException e) {
         	 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
         }
     }
-
+    /*
+     * für Passwortwechsel, wenn paasswortAenderung true ist.
+     */
     @PostMapping("/benutzer/passwortWechsel")
     public ResponseEntity<?> passwortWechsel(@RequestBody PasswortWechselDTO passwortWDto) {
     	 try {
@@ -48,7 +52,9 @@ public class LoginController {
              return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
          }
     }
-
+    /*
+     * für MFA wenn Mfa true ist.
+     */
     @PostMapping("/login/mfa")
     public ResponseEntity<?> verifyMfa(@RequestBody Map<String, Object> body) {
     	try {
