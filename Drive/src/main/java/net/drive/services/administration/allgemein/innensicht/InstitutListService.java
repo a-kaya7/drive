@@ -22,7 +22,7 @@ public class InstitutListService implements IInstitutListService {
 	public List<InstitutListDTO> getAllInstitut() {
 	
 		return institutRepo.findAll().stream().map(entity -> new InstitutListDTO(
-				entity.getId(),
+				entity.getInsitutId(),
 				entity.getInstitutsname(),
 				entity.getBezeichnung(),
 				entity.getLocale(),

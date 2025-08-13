@@ -51,7 +51,7 @@ public class MandantNeuanlegenService implements IMandantNeuanlegenService {
 				.orElseThrow(() -> new IllegalArgumentException(logicResource.getMessage("InstitutID" + mandantDto.institut())));
 		
 		Mandant mandant = new Mandant();
-		mandant.setId(mandantDto.id());
+		mandant.setMandantId(mandantDto.mandantId());
 		mandant.setIdname(mandantDto.idname());
 		mandant.setBeschreibung(mandantDto.beschreibung());
 		mandant.setInstitut(institut);
@@ -65,10 +65,10 @@ public class MandantNeuanlegenService implements IMandantNeuanlegenService {
 	}
 	
 	public MandantDTO mapToDto(Mandant mandant) {
-		return new MandantDTO(mandant.getId(),
+		return new MandantDTO(mandant.getMandantId(),
 		mandant.getIdname(),
 		mandant.getBeschreibung(),
-		mandant.getInstitut() != null ? mandant.getInstitut().getId() : null,
+		mandant.getInstitut() != null ? mandant.getInstitut().getInsitutId() : null,
 		mandant.getLocale(),
 		mandant.getTelefon(),
 		mandant.getAdresse(),

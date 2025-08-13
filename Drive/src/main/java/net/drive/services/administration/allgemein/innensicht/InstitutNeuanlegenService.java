@@ -40,7 +40,7 @@ public class InstitutNeuanlegenService implements IInstitutNeuanlegenService  {
 	 */
 	private Institut mapToEntity(InstitutDTO institutDto) {
 		Institut institutEntity = new Institut();
-		institutEntity.setId(institutDto.id());
+		institutEntity.setInsitutId(institutDto.InstitutId());
 		institutEntity.setInstitutsname(institutDto.institutsname());
 		institutEntity.setBezeichnung(institutDto.bezeichnung());
 		institutEntity.setIban(institutDto.iban());
@@ -55,7 +55,7 @@ public class InstitutNeuanlegenService implements IInstitutNeuanlegenService  {
 	
 	private InstitutDTO mapToDto(Institut institut) {
 	    return new InstitutDTO(
-	        institut.getId(),
+	        institut.getInsitutId(),
 	        institut.getInstitutsname(),
 	        institut.getBezeichnung(),
 	        institut.getIban(),

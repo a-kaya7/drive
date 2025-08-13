@@ -46,7 +46,7 @@ public class BenutzergruppeNeuanlegenService implements IBenutzergruppeNeuanlege
 		Mandant mandant = mandantRepo.findMandantByIdname(bGruppe.mandant())
 				.orElseThrow(() -> new IllegalArgumentException(logicResource.getMessage("MandantID")));
 		Benutzergruppe benutzerGruppe = new Benutzergruppe();
-		benutzerGruppe.setId(bGruppe.id());
+		benutzerGruppe.setBenutzergruppeId(bGruppe.benutzergruppeId());
 		benutzerGruppe.setBenutzergruppe(bGruppe.benutzergruppe());
 		benutzerGruppe.setBeschreibung(bGruppe.beschreibung());
 		benutzerGruppe.setFreigabe(bGruppe.freigabe());
@@ -57,7 +57,7 @@ public class BenutzergruppeNeuanlegenService implements IBenutzergruppeNeuanlege
 
 	public BenutzergruppeDTO mapToDto(Benutzergruppe bGruppe) {
 		return new BenutzergruppeDTO(
-				bGruppe.getId(), 
+				bGruppe.getBenutzergruppeId(), 
 				bGruppe.getBenutzergruppe(), 
 				bGruppe.getBeschreibung(),
 				bGruppe.isFreigabe(),

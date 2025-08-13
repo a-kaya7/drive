@@ -28,7 +28,7 @@ const BenutzerNeuanlage: React.FC = () => {
 
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
-  const [mandantListe, setMandantListe] = useState<Array<{id: string; idname: string }>>([]);
+  const [mandantListe, setMandantListe] = useState<Array<{mandantId: string; idname: string }>>([]);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -183,7 +183,7 @@ const BenutzerNeuanlage: React.FC = () => {
                 >
                   <option value="">Bitte wählen</option>
                   {mandantListe.map((inst) => (
-                    <option key={inst.id.toString()} value={inst.idname.toString()}>
+                    <option key={inst.mandantId.toString()} value={inst.idname.toString()}>
                       {inst.idname}
                     </option>
                   ))}

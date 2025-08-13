@@ -5,7 +5,7 @@ import java.util.UUID;
 import net.drive.model.datentypen.Adresse;
 
 public record InstitutDTO(
-		UUID id,
+		UUID InstitutId,
 		String institutsname,
 		String bezeichnung,
 		String iban,

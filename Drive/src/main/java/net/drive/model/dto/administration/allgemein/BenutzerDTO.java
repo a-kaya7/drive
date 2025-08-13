@@ -7,7 +7,7 @@ import java.util.UUID;
 
 
 public record BenutzerDTO(
-		UUID id,
+		UUID benutzerId,
 		String benutzerkennung,
 		String anrede,
 		String vorname,
