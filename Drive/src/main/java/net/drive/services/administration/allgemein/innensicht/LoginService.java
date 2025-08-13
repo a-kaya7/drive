@@ -2,6 +2,7 @@ package net.drive.services.administration.allgemein.innensicht;
 
 import java.awt.image.BufferedImage;
 
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.Base64;
@@ -9,7 +10,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.imageio.ImageIO;
-
 
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -28,6 +28,7 @@ import com.warrenstrange.googleauth.GoogleAuthenticator;
 import com.warrenstrange.googleauth.GoogleAuthenticatorKey;
 import com.warrenstrange.googleauth.GoogleAuthenticatorQRGenerator;
 
+import jakarta.servlet.http.HttpSession;
 import net.drive.config.JwtService;
 import net.drive.config.LogicResource;
 import net.drive.model.dto.administration.allgemein.LoginDTO;
@@ -35,6 +36,8 @@ import net.drive.model.dto.administration.allgemein.PasswortWechselDTO;
 import net.drive.model.entities.administration.allgemein.Benutzer;
 import net.drive.repository.administration.allgemein.IBenutzerRepository;
 import net.drive.services.administration.allgemein.aussensicht.IBenutzerBearbeitenService;
+import net.drive.services.support.innensicht.SGlue;
+import net.drive.services.support.innensicht.User;
 
 
 
@@ -50,7 +53,6 @@ public class LoginService {
 	    private final IBenutzerRepository benutzerRepository;
 	    private final JwtService jwtService;
 	    private final LogicResource logicResource;
-
 	    
 	    public LoginService(
 	    		AuthenticationManager authenticationManager,
@@ -67,7 +69,7 @@ public class LoginService {
 	    	this.logicResource = logicResource;
 	    }
 	    
-	    public Map<String, Object> login(LoginDTO loginDto){
+	    public Map<String, Object> login(LoginDTO loginDto, HttpSession session){
 	    	Authentication authentication;
 	    	try {
 	    		authentication = authenticationManager.authenticate(
@@ -81,6 +83,17 @@ public class LoginService {
 	    	}
 	    	
 	    	Benutzer benutzer = benutzerService.getBenutzerByBenutzerkennung(loginDto.benutzerkennung());
+	    	
+	    	User user = new User();
+	        user.setBenutzerId(benutzer.getBenutzerId().toString());
+	        user.setBenutzerkennung(benutzer.getBenutzerkennung());
+	        user.setVorname(benutzer.getVorname());
+	        user.setNachname(benutzer.getNachname());
+	        user.setMandant(benutzer.getMandant());
+	        user.setBenutzergruppe(benutzer.getBenutzergruppe());
+	       
+	        SGlue.SetUser(session, user);
+	        
             // wenn PasswortÄnderung aktiv ist.
 	        if (benutzer.isPasswortAenderung()) {
 	            return Map.of(
@@ -155,7 +168,7 @@ public class LoginService {
 	    }
 	    
 
-	    // MFA secret oluşturup DB'ye kaydeden metod
+	    // MFA secret wenn der Benutzer kein MfaKey hat
 	    public void aktiviereMfaFürBenutzer(Benutzer benutzer) {
 	    	if (benutzer.getMfaSecret() == null || benutzer.getMfaSecret().isEmpty()) {
 	            GoogleAuthenticator gAuth = new GoogleAuthenticator();
@@ -180,7 +193,9 @@ public class LoginService {
 	    public boolean isValid(String secret, int code) {
 	        return gAuth.authorize(secret, code);
 	    }
-	    
+	    /*
+	     * QR-Code wird erstellt.
+	     */
 	    public static String generateQRBase64(String qrCodeText) {
 	        try {
 	            QRCodeWriter qrCodeWriter = new QRCodeWriter();
