@@ -64,6 +64,9 @@ public class Benutzer {
 
 	@Column(name = "mfa")
 	private boolean mfa;
+	
+	@Column(name = "mfa_secret")
+    private String mfaSecret;
 
 	@ManyToOne
 	@JoinColumn(name = "benutzergruppe")
