@@ -23,7 +23,7 @@ public class Benutzergruppe {
 	@GeneratedValue(generator = "UUID")
 	@GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
 	@Column(updatable = false, nullable = false)
-	private UUID id;
+	private UUID benutzergruppeId;
 	
 	@Column(name = "benutzergruppe")
 	private String benutzergruppe;

@@ -24,7 +24,7 @@ public class Benutzer {
 	@GeneratedValue(generator = "UUID")
 	@GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
 	@Column(updatable = false, nullable = false)
-	private UUID id;
+	private UUID benutzerId;
 
 	@Column(name = "benutzerkennung")
 	private String benutzerkennung;

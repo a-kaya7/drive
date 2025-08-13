@@ -19,7 +19,7 @@ public class MandantListService implements IMandantListService {
 	@Override
 	public List<MandantListDTO> getAllMandant() {
 		return mandantRepo.findAll().stream().map(e -> new MandantListDTO(
-				e.getId(),
+				e.getMandantId(),
 				e.getIdname(),
 				e.getBeschreibung(), 
 				e.getLocale(), 

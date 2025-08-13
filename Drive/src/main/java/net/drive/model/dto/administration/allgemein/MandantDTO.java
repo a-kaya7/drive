@@ -5,7 +5,7 @@ import java.util.UUID;
 import net.drive.model.datentypen.Adresse;
 
 public record MandantDTO(
-		UUID id,
+		UUID mandantId,
 		String idname,
 		String beschreibung,
 		UUID institut,

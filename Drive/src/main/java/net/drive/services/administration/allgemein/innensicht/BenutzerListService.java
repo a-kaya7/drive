@@ -21,7 +21,7 @@ public class BenutzerListService implements IBenutzerListService {
 	public List<BenutzerListDTO> getAllBenutzer() {
 		
 		return benutzerRepo.findAll().stream().map(e -> new BenutzerListDTO(
-				e.getId(),
+				e.getBenutzerId(),
 				e.getBenutzerkennung(),
 				e.getVorname(),
 				e.getBenutzerBis(),

@@ -20,7 +20,7 @@ const MandantenNeuanlage = () => {
   const [error, setError] = useState("");
   const [message, setMessage] = useState<{ text: string; type: string }>({ text: "", type: "" });
   const [loading, setLoading] = useState(false);
-  const [instituteListe, setInstituteListe] = useState<Array<{ id: String; institutsname: string }>>([]);
+  const [instituteListe, setInstituteListe] = useState<Array<{ InstitutId: String; institutsname: string }>>([]);
 
   const navigate = useNavigate();
 
@@ -101,7 +101,7 @@ const MandantenNeuanlage = () => {
                 >
                   <option value="">Bitte wählen</option>
                   {instituteListe.map((inst) => (
-                    <option key={inst.id.toString()} value={inst.id.toString()}>
+                    <option key={inst.InstitutId.toString()} value={inst.InstitutId.toString()}>
                       {inst.institutsname}
                     </option>
                   ))}

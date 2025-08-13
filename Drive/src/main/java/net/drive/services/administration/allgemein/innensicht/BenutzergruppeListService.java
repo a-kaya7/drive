@@ -22,7 +22,7 @@ public class BenutzergruppeListService implements IBenutzergruppeListService {
 	public List<BenutzergruppeDTO> getAllBenutzergruppe() {
 		
 		return bgRepo.findAll().stream().map(bg -> new BenutzergruppeDTO(
-				bg.getId(),
+				bg.getBenutzergruppeId(),
 				bg.getBenutzergruppe(),
 				bg.getBeschreibung(),
 				bg.isFreigabe(),

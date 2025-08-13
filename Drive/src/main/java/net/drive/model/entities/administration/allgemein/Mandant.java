@@ -27,7 +27,7 @@ public class Mandant {
 	@GeneratedValue(generator = "UUID")
 	@GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
 	@Column(updatable = false, nullable = false)
-	private UUID id;
+	private UUID mandantId;
 	
 	@Column(name = "mandant_name")
 	private String idname;

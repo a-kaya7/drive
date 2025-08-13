@@ -59,7 +59,7 @@ public class BenutzerNeuanlegenService implements IBenutzerNeuanlegenService {
 				.orElseThrow(() -> new IllegalArgumentException(logicResource.getMessage("KeinMandantID")));
 
 		Benutzer benutzer = new Benutzer();
-		benutzer.setId(benutzerDto.id());
+		benutzer.setBenutzerId(benutzerDto.benutzerId());
 		benutzer.setBenutzerkennung(benutzerDto.benutzerkennung());
 		benutzer.setAnrede(benutzerDto.anrede());
 		benutzer.setVorname(benutzerDto.vorname());
@@ -81,7 +81,7 @@ public class BenutzerNeuanlegenService implements IBenutzerNeuanlegenService {
 	}
 
 	public BenutzerDTO mapToDto(Benutzer benutzer) {
-		return new BenutzerDTO(benutzer.getId(),
+		return new BenutzerDTO(benutzer.getBenutzerId(),
 				benutzer.getBenutzerkennung(), 
 				benutzer.getAnrede(),
 				benutzer.getVorname(), 

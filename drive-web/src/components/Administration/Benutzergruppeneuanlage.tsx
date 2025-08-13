@@ -13,7 +13,7 @@ const BenutzergruppeNeuanlage: React.FC = () => {
   const [error, setError] = useState<string>("");
   const [message, setMessage] = useState<{ text: string; type: string }>({ text: "", type: "" });
   const [loading, setLoading] = useState<boolean>(false);
-  const [mandantListe, setMandantListe] = useState<Array<{id: string; idname: string }>>([]);
+  const [mandantListe, setMandantListe] = useState<Array<{mandantId: string; idname: string }>>([]);
 
   const navigate = useNavigate();
 
@@ -115,7 +115,7 @@ const BenutzergruppeNeuanlage: React.FC = () => {
                 >
                   <option value="">Bitte wählen</option>
                   {mandantListe.map((inst) => (
-                    <option key={inst.id.toString()} value={inst.idname.toString()}>
+                    <option key={inst.mandantId.toString()} value={inst.idname.toString()}>
                       {inst.idname}
                     </option>
                   ))}

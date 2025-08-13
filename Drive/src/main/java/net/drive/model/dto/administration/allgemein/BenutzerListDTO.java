@@ -4,7 +4,7 @@ import java.time.LocalDate;
 import java.util.UUID;
 
 public record BenutzerListDTO(
-		UUID id,
+		UUID benutzerId,
 		String benutzerkennung,
 		String vorname,
 		LocalDate benutzerBis,
