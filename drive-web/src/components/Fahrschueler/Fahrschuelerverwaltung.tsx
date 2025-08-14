@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-/* Veri modeli */
+/*  */
 interface Module {
   id: number;
   title: string;
@@ -9,19 +9,16 @@ interface Module {
   link: string;
 }
 
-/* Modül listesi */
+/* Modül liste */
 const modules: Module[] = [
-  { id: 1, title: "Institut", description: "Institute verwalten", link: "/institute" },
-  { id: 2, title: "Mandanten", description: "Mandant verwalten", link: "/mandanten" },
-  { id: 3, title: "Benutzer/Rollen", description: "Benutzer/gruppe verwalten", link: "/benutzergruppe" },
-  { id: 4, title: "Organisationseinheiten", description: "Organisationseinheiten verwalten", link: "/organisationseinheiten" },
-  { id: 5, title: "Systemfunktion", description: "Admin-Bereich", link: "/schueler-management" },
-  { id: 6, title: "Protokolierung", description: "Admin-Bereich", link: "/schueler-management" },
-  { id: 7, title: "Scorecard", description: "Admin-Bereich", link: "/schueler-management" },
-  { id: 8, title: "System", description: "Admin-Bereich", link: "/schueler-management" },
+  { id: 1, title: "Fahrschülerprofile", description: "Fahrschüler verwalten", link: "/Fahrschueler" },
+  { id: 2, title: "Unterrichtsverwaltung", description: "Admin-Bereich", link: "/mandanten" },
+  { id: 3, title: "Prüfungs- und Testverwaltung", description: "Admin-Bereich", link: "/benutzergruppe" },
+  { id: 4, title: "Zahlungsverwaltung", description: "Admin-Bereich", link: "/schueler-management" },
+  { id: 5, title: "Benachrichtigung", description: "Admin-Bereich", link: "/schueler-management" },
 ];
 
-/* Sayfa stili */
+/*  */
 const pageStyle: React.CSSProperties = {
   margin: 0,
   fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif',
@@ -70,8 +67,7 @@ const descriptionStyle: React.CSSProperties = {
   flexGrow: 1,
 };
 
-/* Ana bileşen */
-function Administration() {
+function Fahrschueler() {
   return (
     <div style={pageStyle}>
       <main style={mainStyle}>
@@ -86,7 +82,6 @@ function Administration() {
   );
 }
 
-/* Kart bileşeni */
 interface ModuleCardProps {
   module: Module;
 }
@@ -114,4 +109,4 @@ function ModuleCard({ module }: ModuleCardProps) {
   );
 }
 
-export default Administration;
+export default Fahrschueler;

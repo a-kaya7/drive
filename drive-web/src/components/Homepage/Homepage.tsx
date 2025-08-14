@@ -11,7 +11,7 @@ interface Module {
 
 const modules: Module[] = [
   { id: 1, title: "Administration", description: "Allgemein, Recht, Import/Export, Drucken, Wartungsmodus", link: "/administration" },
-  { id: 2, title: "Fahrschülerverwaltung", description: "Verwaltung der Fahrschülerdaten und -profile", link: "/schueler-management" },
+  { id: 2, title: "Fahrschülerverwaltung", description: "Fahrschülerprofile,Unterrichtsverwaltung,Prüfungs- und Testverwaltung,Zahlungsverwaltung,Benachrichtigungen ", link: "/fahrschuelerverwaltung" },
   { id: 3, title: "Stundenplanung und Kalender", description: "Theorie- & Praxisunterricht, Kalenderverwaltung", link: "/schedule" },
   { id: 4, title: "Reservierungssystem", description: "Unterrichtsreservierung, Fahrlehrer- & Fahrzeugausswahl", link: "/reservation" },
   { id: 5, title: "Prüfungsverfolgung", description: "Prüfungstermine, Ergebnisse und Simulationstests", link: "/exam-tracking" },

@@ -24,4 +24,7 @@
     <PasswortGaendert>Passwort erfolgreich geändert</PasswortGaendert>
     <UngültigeAnfrage>Ungültige Anfrage</UngültigeAnfrage>
     <UngültigerMFA-Code>Ungültiger MFA-Code</UngültigerMFA-Code>
+    <FuehrerscheinVorhanden>Diese Führerscheinklasse ist schon vorhanden</FuehrerscheinVorhanden>
+    <KeinFuehrerschein>Führerscheinklasse  darf nicht leer sein</KeinFuehrerschein>
+    <KeineBerechtigung>Sie haben keine Berechtigung zum Führerscheinklasse-Hinzufügen</KeineBerechtigung>
 </messages>

@@ -3,14 +3,11 @@ import { NavLink, Outlet, useLocation } from "react-router-dom";
 const PRIMARY_COLOR = "#174bd1ff";
 
 const actions = [
-  { name: "Institut", path: "/institute" },
-  { name: "Mandanten", path: "/mandanten" },
-  { name: "Benutzer/Rollen", path: "/benutzergruppe" },
-  { name: "Organisationseinheiten", path: "/organisationseinheiten" },
-  { name: "Systemfunktion", path: "/systemfunktion" },
-  { name: "Protokolierung", path: "/protokolierung" },
-  { name: "Scorecard", path: "/scorecard" },
-  { name: "System", path: "/system" },
+  { name: "Fahrschülerprofile", path: "/fahrschulerr" },
+  { name: "Unterrichtsverwaltung", path: "/mandanten" },
+  { name: "Prüfungs und-Testverwaltung", path: "/benutzergruppe" },
+  { name: "Zahlungsverwaltung", path: "/organisation" },
+  { name: "Benachrichtigung", path: "/systemfunktion" },
 ];
 
 export default function PageLayout() {
@@ -26,7 +23,7 @@ export default function PageLayout() {
           borderRight: "1px solid #ddd",
         }}
       >
-        <h3 style={{ color: PRIMARY_COLOR }}>Administration</h3>
+        <h3 style={{ color: PRIMARY_COLOR }}>Fahrschüler-Verwaltung</h3>
         <ul style={{ listStyle: "none", padding: 0 }}>
           {actions.map(({ name, path }) => {
             const isActive =

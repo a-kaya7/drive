@@ -9,7 +9,7 @@ interface MainModulesNavProps {
 const MODULES = [
   { to: "/home", label: <FaHome size={16} /> },
   { to: "/administration", label: "Administration" },
-  { to: "/gruppe", label: "Fahrschülerverwaltung" },
+  { to: "/fahrschuelerverwaltung", label: "Fahrschülerverwaltung" },
   { to: "/benutzerg", label: "Kursplanung & Kalender" },
   { to: "/students", label: "Reservierungssystem" },
   { to: "/kursplanung", label: "Prüfungsüberwachung" },
