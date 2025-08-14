@@ -17,9 +17,14 @@ import Institutbearbeiten from "./components/Administration/Institutbearbeiten";
 import Mandant from "./components/Administration/Mandant";
 import Mandantenneuanlage from "./components/Administration/Mandantneuanlage";
 import Mandantbearbeiten from "./components/Administration/Mandantbearbeiten";
+import Organisationseinheiten from "./components/Administration/Organisationseinheiten";
+import Fuehrerscheinverwalten from "./components/Führerschein/Fuehrerscheinverwalten";
+import Fahrschuelerverwaltung from "./components/Fahrschueler/Fahrschuelerverwaltung";
+
 
 import PortalLayout from "./components/PageLayout/PortalLayout";
 import PageLayout from "./components/PageLayout/PageLayout";
+import PageFahrschueler from "./components/PageLayout/PageFahrschueler";
 
 function App() {
   return (
@@ -32,6 +37,7 @@ function App() {
           <Route path="/home" element={<HomePage />} />
           <Route path="/administration" element={<Administration />} />
           <Route path="/administrationallgemein" element={<AdministrationAllgemein />} />
+          <Route path="/fahrschuelerverwaltung" element={<Fahrschuelerverwaltung/>} />
 
           <Route element={<PageLayout />}>
             <Route path="/institute" element={<Institut />} />
@@ -46,6 +52,12 @@ function App() {
             <Route path="/mandanten" element={<Mandant />} />
             <Route path="/mandantenneuanlage" element={<Mandantenneuanlage />} />
             <Route path="/mandantbearbeiten/:idname" element={<Mandantbearbeiten/>} />
+            <Route path="/organisationseinheiten" element={<Organisationseinheiten/>} />
+            <Route path="/führerscheinverwalten" element={<Fuehrerscheinverwalten/>} />
+            
+          </Route>
+          <Route element={<PageFahrschueler/>}>
+            
           </Route>
         </Route>
       </Routes>
