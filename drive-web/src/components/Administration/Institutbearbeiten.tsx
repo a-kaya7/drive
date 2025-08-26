@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import type { FormEvent } from "react";
-import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
+import { api } from "../ApiConfig/api";
 
 const PRIMARY_COLOR = "#174bd1ff";
 
@@ -29,7 +29,7 @@ const Institutbearbeiten: React.FC = () => {
   useEffect(() => {
     const fetchInstitut = async () => {
       try {
-        const res = await axios.get(`http://localhost:8080/api/institut/${routeInstitutsname}`);
+        const res = await api.get(`/api/institut/${routeInstitutsname}`);
         const data = res.data;
 
         setInstitutsname(data.institutsname || "");
@@ -63,7 +63,7 @@ const Institutbearbeiten: React.FC = () => {
     setLoading(true);
 
     try {
-      await axios.put(`http://localhost:8080/api/institutbearbeiten/${routeInstitutsname}`, {
+      await api.put(`/api/institutbearbeiten/${routeInstitutsname}`, {
         institutsname,
         bezeichnung,
         iban,

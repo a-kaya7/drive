@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { api } from "../ApiConfig/api";
 
 const PRIMARY_COLOR = "#174bd1ff";
 
@@ -36,7 +36,7 @@ const InstitutNeuanlage = () => {
     setLoading(true);
 
     try {
-      await axios.post("http://localhost:8080/api/institutneuanlage", {
+      await api.post("/api/institutneuanlage", {
         institutsname,
         bezeichnung,
         iban,

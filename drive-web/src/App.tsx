@@ -20,6 +20,9 @@ import Mandantbearbeiten from "./components/Administration/Mandantbearbeiten";
 import Organisationseinheiten from "./components/Administration/Organisationseinheiten";
 import Fuehrerscheinverwalten from "./components/Führerschein/Fuehrerscheinverwalten";
 import Fahrschuelerverwaltung from "./components/Fahrschueler/Fahrschuelerverwaltung";
+import Fahrschuelerneuanlage from "./components/Fahrschueler/Fahrschuelerneuanlage";
+import Fahrschueler from "./components/Fahrschueler/Fahrschueler";
+import Fahrschuelerbearbeiten from "./components/Fahrschueler/Fahrschuelerbearbeiten";
 
 
 import PortalLayout from "./components/PageLayout/PortalLayout";
@@ -57,7 +60,9 @@ function App() {
             
           </Route>
           <Route element={<PageFahrschueler/>}>
-            
+           <Route path="/fahrschuelerneuanlage" element={<Fahrschuelerneuanlage/>} />
+           <Route path="/fahrschueler" element={<Fahrschueler/>} />
+           <Route path="/fahrschuelerbearbeiten/:fahrschuelerId" element={<Fahrschuelerbearbeiten/>} />
           </Route>
         </Route>
       </Routes>

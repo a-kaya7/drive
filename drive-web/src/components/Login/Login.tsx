@@ -1,6 +1,7 @@
 import { useState, type FormEvent } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import { login } from "../ApiConfig/authService"; 
+import { api } from "../ApiConfig/api";
 import "./Login.css";
 
 interface Message {
@@ -15,25 +16,22 @@ function Login() {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState<Message>({ text: "", type: "" });
 
-    // MFA state
+  // MFA state
   const [showMfaPopup, setShowMfaPopup] = useState(false);
   const [otpAuthUrl, setOtpAuthUrl] = useState("");
   const [mfaCode, setMfaCode] = useState("");
 
-  // Popup  state
+  // Popup state
   const [showPopup, setShowPopup] = useState(false);
   const [resetEmail, setResetEmail] = useState("");
   const [resetMessage, setResetMessage] = useState("");
-  //Popup Passwortwecheln
 
+  // Passwortwechsel
   const [showPasswortPopup, setShowPasswortPopup] = useState(false);
   const [altesPasswort, setAltesPasswort] = useState("");
   const [neuesPasswort, setNeuesPasswort] = useState("");
   const [passwortWiederholung, setPasswortWiederholung] = useState("");
   const [error, setError] = useState<string | null>(null);
-
-  const [token, setToken] = useState<string | null>(null);
-
 
   const handleLogin = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -42,34 +40,23 @@ function Login() {
     setError(null);
 
     try {
-      const response = await axios.post("http://localhost:8080/api/login", {
-        benutzerkennung,
-        passwort,
-      });
-
-      const data = response.data;
-   if (data.mfaRequired) {
-        // MFA  ist aktiv , QR code
-        setOtpAuthUrl(data.qrCodeBase64);
+      const data = await login(benutzerkennung, passwort);
+      if (data.passwortAenderung) {
+        setShowPasswortPopup(true);
+      } else if (data.mfaRequired) {
+        setOtpAuthUrl(data.qrCodeBase64 || "");
         setShowMfaPopup(true);
-      } else {
-        // MFA 
-        setToken(data.token || null);
-
-        if (data.passwortAenderung) {
-          setShowPasswortPopup(true);
-        } else {
-          navigate("/home");
-        }
-
-        setMessage({
-          text: "Login erfolgreich!",
-          type: "success",
-        });
+      } else if (data.token) {
+        localStorage.setItem("token", data.token);
+        navigate("/home");
       }
-    } catch {
       setMessage({
-        text: "Login fehlgeschlagen. Bitte überprüfen Sie Ihre Eingaben.",
+        text: "",
+        type: "success",
+      });
+    } catch (err: any) {
+      setMessage({
+        text: err.response?.data?.message || "Login fehlgeschlagen. Bitte überprüfen Sie Ihre Eingaben.",
         type: "error",
       });
     } finally {
@@ -82,21 +69,21 @@ function Login() {
     setError(null);
 
     try {
-      const response = await axios.post("http://localhost:8080/api/login/mfa", {
+      const response = await api.post("/api/login/mfa", {
         benutzerkennung,
         mfaCode: Number(mfaCode),
       });
 
-      const data = response.data;
-      setToken(data.token || null);
-      setShowMfaPopup(false);
+      if (response.data.token) {
+        localStorage.setItem("token", response.data.token);
+        setShowMfaPopup(false);
 
-      if (data.passwortAenderung) {
-        setShowPasswortPopup(true);
-      } else {
-        navigate("/home");
+        if (response.data.passwortAenderung) {
+          setShowPasswortPopup(true);
+        } else {
+          navigate("/home");
+        }
       }
-
       setMessage({
         text: "MFA erfolgreich bestätigt!",
         type: "success",
@@ -112,6 +99,7 @@ function Login() {
     console.log("Nachricht:", resetMessage);
     setShowPopup(false);
   };
+
   const handlePasswortWechselSubmit = async (e: FormEvent) => {
     e.preventDefault();
     setError(null);
@@ -122,7 +110,7 @@ function Login() {
     }
 
     try {
-      await axios.post("http://localhost:8080/api/benutzer/passwortWechsel", {
+     await api.post("/api/benutzer/passwortWechsel", {
         benutzerkennung,
         altesPasswort,
         neuesPasswort,
@@ -131,7 +119,6 @@ function Login() {
 
       setShowPasswortPopup(false);
       setMessage({ text: "Passwort erfolgreich geändert. Bitte erneut anmelden.", type: "success" });
-      // Oturumu sonlandırabilir ya da kullanıcıyı login ekranına yönlendirebilirsin
       setBenutzerkennung("");
       setPasswort("");
     } catch (err: any) {
@@ -165,57 +152,41 @@ function Login() {
           {loading ? "Wird geprüft..." : "Login"}
         </button>
 
-        {/* Passwort vergessen linki */}
-        <p
-          className="forgot-password"
-          onClick={() => setShowPopup(true)}
-        >
+        <p className="forgot-password" onClick={() => setShowPopup(true)}>
           Passwort vergessen?
         </p>
 
-        {message.text && (
-          <p className={`message ${message.type}`}>{message.text}</p>
-        )}
+        {message.text && <p className={`message ${message.type}`}>{message.text}</p>}
       </form>
 
       {/* MFA Popup */}
-     {showMfaPopup && (
-  <div className="popup-overlay">
-    <div className="popup">
-      <h3>MFA Verifizierung</h3>
-      <p>Scannen Sie den QR-Code mit Google Authenticator und geben Sie den Code ein:</p>
-
-      {otpAuthUrl && (
-        <img
-          src={otpAuthUrl}
-          alt="MFA QR Code"
-          style={{ marginBottom: "10px", width: "200px", height: "200px" }}
-        />
-      )}
-
-      <form onSubmit={handleMfaSubmit}>
-        <input
-          type="text"
-          placeholder="MFA Code"
-          value={mfaCode}
-          onChange={(e) => setMfaCode(e.target.value)}
-          required
-          maxLength={6}
-          pattern="\d{6}"
-        />
-        {error && <p className="message error">{error}</p>}
-        <div className="popup-actions">
-          <button type="button" onClick={() => setShowMfaPopup(false)}>
-            Abbrechen
-          </button>
-          <button type="submit">Bestätigen</button>
+      {showMfaPopup && (
+        <div className="popup-overlay">
+          <div className="popup">
+            <h3>MFA Verifizierung</h3>
+            <p>Scannen Sie den QR-Code mit Google Authenticator und geben Sie den Code ein:</p>
+            {otpAuthUrl && <img src={otpAuthUrl} alt="MFA QR Code" style={{ marginBottom: "10px", width: "200px", height: "200px" }} />}
+            <form onSubmit={handleMfaSubmit}>
+              <input
+                type="text"
+                placeholder="MFA Code"
+                value={mfaCode}
+                onChange={(e) => setMfaCode(e.target.value)}
+                required
+                maxLength={6}
+                pattern="\d{6}"
+              />
+              {error && <p className="message error">{error}</p>}
+              <div className="popup-actions">
+                <button type="button" onClick={() => setShowMfaPopup(false)}>Abbrechen</button>
+                <button type="submit">Bestätigen</button>
+              </div>
+            </form>
+          </div>
         </div>
-      </form>
-    </div>
-  </div>
       )}
 
-      {/* Popup */}
+      {/* Passwort reset popup */}
       {showPopup && (
         <div className="popup-overlay">
           <div className="popup">
@@ -236,16 +207,15 @@ function Login() {
                 required
               />
               <div className="popup-actions">
-                <button type="button" onClick={() => setShowPopup(false)}>
-                  Abbrechen
-                </button>
+                <button type="button" onClick={() => setShowPopup(false)}>Abbrechen</button>
                 <button type="submit">Senden</button>
               </div>
             </form>
           </div>
         </div>
       )}
-        {/* Passwortwechsel Popup */}
+
+      {/* Passwortwechsel Popup */}
       {showPasswortPopup && (
         <div className="popup-overlay">
           <div className="popup">
@@ -278,9 +248,7 @@ function Login() {
               {error && <p className="message error">{error}</p>}
 
               <div className="popup-actions">
-                <button type="button" onClick={() => setShowPasswortPopup(false)}>
-                  Abbrechen
-                </button>
+                <button type="button" onClick={() => setShowPasswortPopup(false)}>Abbrechen</button>
                 <button type="submit">Speichern</button>
               </div>
             </form>

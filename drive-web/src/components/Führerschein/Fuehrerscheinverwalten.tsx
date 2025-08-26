@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { FiEdit, FiTrash2 } from "react-icons/fi";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { api } from "../ApiConfig/api";
 
 const PRIMARY_COLOR = "#174bd1ff";
 
@@ -31,8 +31,8 @@ const Fuehrerscheinverwalten: React.FC = () => {
 
   const fetchFuehrerschein = async () => {
     try {
-      const response = await axios.get<Fuehrerschein[]>(
-        "http://localhost:8080/api/fuehrerscheinlist"
+      const response = await api.get<Fuehrerschein[]>(
+        "/api/fuehrerscheinlist"
       );
       setListe(response.data);
     } catch (err) {
@@ -59,7 +59,7 @@ const Fuehrerscheinverwalten: React.FC = () => {
     };
 
     try {
-      await axios.post("http://localhost:8080/api/fuehrerscheinneuanlage", newItem);
+      await api.post("/api/fuehrerscheinneuanlage", newItem);
       // Formu_Clean
       setFuehrerscheinKlasse("");
       setFahrzeuge_Ekl("");
@@ -82,7 +82,7 @@ const Fuehrerscheinverwalten: React.FC = () => {
   const handleDelete = async (fuehrerscheinKlasse: string) => {
     if (!window.confirm("Soll dieser Führerschein gelöscht werden?")) return;
     try {
-      await axios.delete(`http://localhost:8080/api/fuehrerschein/${fuehrerscheinKlasse}`);
+      await api.delete(`/api/fuehrerschein/${fuehrerscheinKlasse}`);
       await fetchFuehrerschein();
     } catch (e) {
       console.error(e);

@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import type { CSSProperties } from "react";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { FiEdit, FiTrash2 } from "react-icons/fi";
+import { api } from "../ApiConfig/api";
 
 const PRIMARY_COLOR = "#174bd1ff";
 
@@ -23,7 +23,7 @@ const MandantenListe: React.FC = () => {
 
   const fetchMandanten = async () => {
     try {
-      const response = await axios.get("http://localhost:8080/api/mandantenlist");
+      const response = await api.get("/api/mandantenlist");
       setMandanten(response.data);
     } catch (err) {
       console.error("Fehler beim Laden der Mandanten:", err);
@@ -33,7 +33,7 @@ const MandantenListe: React.FC = () => {
   const handleDelete = async (idname: String) => {
     if (!window.confirm("Soll dieser Mandant gelöscht werden?")) return;
     try {
-      await axios.delete(`http://localhost:8080/api/mandant/${idname}`);
+      await api.delete(`/api/mandant/${idname}`);
       setMandanten((prev) => prev.filter((m: any) => m.idname !== idname));
     } catch (e) {
       alert("Löschen fehlgeschlagen!");

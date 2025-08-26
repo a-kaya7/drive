@@ -2,6 +2,7 @@ import React, { useState, useEffect} from "react";
 import type { FormEvent } from "react";
 import axios, { AxiosError } from "axios";
 import { useNavigate } from "react-router-dom";
+import { api } from "../ApiConfig/api";
 
 const PRIMARY_COLOR = "#174bd1ff";
 
@@ -20,7 +21,7 @@ const BenutzergruppeNeuanlage: React.FC = () => {
   useEffect(() => {
     const fetchMandanten = async () => {
       try {
-        const response = await axios.get("http://localhost:8080/api/mandantenlist");
+        const response = await api.get("/api/mandantenlist");
         setMandantListe(response.data);
       } catch (err) {
         console.error("Fehler beim Laden der Institute:", err);
@@ -41,7 +42,7 @@ const BenutzergruppeNeuanlage: React.FC = () => {
     setLoading(true);
 
     try {
-      await axios.post("http://localhost:8080/api/benutzergruppeneuanlage", {
+      await api.post("/api/benutzergruppeneuanlage", {
         benutzergruppe: benutzergruppe,
         beschreibung: beschreibung,
         freigabe: freigabe,

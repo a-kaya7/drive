@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import type { FormEvent } from "react";
-import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
+import { api } from "../ApiConfig/api";
 
 const PRIMARY_COLOR = "#174bd1ff";
 
@@ -32,7 +32,7 @@ const BenutzerBearbeiten: React.FC = () => {
   useEffect(() => {
     const fetchBenutzer = async () => {
       try {
-        const response = await axios.get(`http://localhost:8080/api/benutzer/${routeBenutzerkennung}`);
+        const response = await api.get(`/api/benutzer/${routeBenutzerkennung}`);
         const data = response.data;
 
         setBenutzerkennung(data.benutzerkennung || "");
@@ -62,7 +62,7 @@ const BenutzerBearbeiten: React.FC = () => {
 
     const fetchMandanten = async () => {
       try {
-        const response = await axios.get("http://localhost:8080/api/mandantenlist");
+        const response = await api.get("/api/mandantenlist");
         setMandantListe(response.data);
       } catch (error) {
         console.error("Fehler beim Laden der Mandanten:", error);
@@ -81,7 +81,7 @@ const BenutzerBearbeiten: React.FC = () => {
     setErrorMessage(null);
 
     try {
-      await axios.put(`http://localhost:8080/api/benutzerbearbeiten/${benutzerkennung}`, {
+      await api.put(`/api/benutzerbearbeiten/${benutzerkennung}`, {
         benutzerkennung,
         anrede,
         vorname,

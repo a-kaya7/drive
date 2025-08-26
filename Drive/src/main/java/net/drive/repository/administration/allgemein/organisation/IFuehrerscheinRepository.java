@@ -11,4 +11,5 @@ public interface IFuehrerscheinRepository extends JpaRepository<Fuehrerschein, U
  
 	boolean existsByFuehrerscheinKlasse(String fuehrerscheinKlasse);
 	Optional<Fuehrerschein> findByFuehrerscheinKlasse(String fuehrerscheinKlasse);
+	Optional<Fuehrerschein> findByFuehrerscheinId(UUID fuehrerscheinId);
 }

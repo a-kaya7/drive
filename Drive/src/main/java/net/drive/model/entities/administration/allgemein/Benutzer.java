@@ -1,9 +1,14 @@
 package net.drive.model.entities.administration.allgemein;
 
 import java.time.LocalDate;
+import java.util.Collection;
+import java.util.List;
 import java.util.UUID;
 
 import org.hibernate.annotations.GenericGenerator;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -18,7 +23,7 @@ import lombok.Data;
 @Entity
 @Table(name = "benutzer")
 @Data
-public class Benutzer {
+public class Benutzer implements UserDetails {
 
 	@Id
 	@GeneratedValue(generator = "UUID")
@@ -75,5 +80,31 @@ public class Benutzer {
 	@ManyToOne
 	@JoinColumn(name = "mandant")
 	private Mandant mandant;
+
+	@Override
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+	    return List.of(new SimpleGrantedAuthority(benutzergruppe.getBenutzergruppe()));
+	}
+
+
+	@Override
+	public String getPassword() {
+	
+		return getPasswort();
+	}
+
+	@Override
+	public String getUsername() {
+		return getBenutzerkennung();
+	}
+	
+	@Override
+    public boolean isAccountNonExpired() { return true; }
+    @Override
+    public boolean isAccountNonLocked() { return true; }
+    @Override
+    public boolean isCredentialsNonExpired() { return true; }
+    @Override
+    public boolean isEnabled() { return true; }
 
 }
