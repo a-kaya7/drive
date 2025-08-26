@@ -2,13 +2,12 @@ package net.drive.services.administration.allgemein.organisation.innensicht;
 
 import org.springframework.stereotype.Service;
 
+
 import net.drive.config.LogicResource;
 import net.drive.model.dto.administration.allgemein.organisation.FuehrerscheinDTO;
 import net.drive.model.entities.administration.allgemein.organisation.Fuehrerschein;
 import net.drive.repository.administration.allgemein.organisation.IFuehrerscheinRepository;
 import net.drive.services.administration.allgemein.organisation.aussensicht.IFuehrerscheinNeuanlegenService;
-import net.drive.services.support.innensicht.SGlue;
-import net.drive.services.support.innensicht.User;
 
 @Service
 public class FuehrerscheinNeuanlegenService  implements IFuehrerscheinNeuanlegenService {

@@ -5,6 +5,7 @@ package net.drive.controller.administration.allgemein;
 
 import java.util.Map;
 
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -14,12 +15,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import jakarta.servlet.http.HttpSession;
 import net.drive.model.dto.administration.allgemein.LoginDTO;
 
 import net.drive.model.dto.administration.allgemein.PasswortWechselDTO;
-
 import net.drive.services.administration.allgemein.innensicht.LoginService;
+
 
 @RestController
 @RequestMapping("/api")
@@ -28,14 +28,17 @@ public class LoginController {
 
     
     private final LoginService loginService;
+    
+   
     public LoginController(LoginService loginService){
     	this.loginService = loginService;
+    	
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody LoginDTO loginDto, HttpSession session) {
+    public ResponseEntity<?> login(@RequestBody LoginDTO loginDto) {
         try {
-        	 Map<String, Object> loginResult = loginService.login(loginDto, session);
+        	 Map<String, Object> loginResult = loginService.login(loginDto);
         	return ResponseEntity.ok(loginResult);
         } catch(BadCredentialsException e) {
         	 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());

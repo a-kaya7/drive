@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import type { FormEvent } from "react";
-import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
+import { api } from "../ApiConfig/api";
 
 const PRIMARY_COLOR = "#174bd1ff";
 
@@ -19,7 +19,7 @@ const BenutzergruppeBearbeiten: React.FC = () =>{
     useEffect(() => {
     const fetchBenutzergruppe = async () => {
       try {
-        const res = await axios.get(`http://localhost:8080/api/benutzergruppe/${routeBenutzergruppe}`);
+        const res = await api.get(`/api/benutzergruppe/${routeBenutzergruppe}`);
         const data = res.data;
 
         setBenutzergruppe(data.benutzergruppe || "");
@@ -36,7 +36,7 @@ const BenutzergruppeBearbeiten: React.FC = () =>{
     const handleSubmit = async (e:FormEvent) => {
         e.preventDefault();
         try{
-            await axios.put(`http://localhost:8080/api/benutzergruppebearbeiten/${routeBenutzergruppe}`, {
+            await api.put(`/api/benutzergruppebearbeiten/${routeBenutzergruppe}`, {
                 benutzergruppe,
                 beschreibung,
                 freigabe,

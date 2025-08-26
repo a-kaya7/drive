@@ -27,4 +27,7 @@
     <FuehrerscheinVorhanden>Diese Führerscheinklasse ist schon vorhanden</FuehrerscheinVorhanden>
     <KeinFuehrerschein>Führerscheinklasse  darf nicht leer sein</KeinFuehrerschein>
     <KeineBerechtigung>Sie haben keine Berechtigung zum Führerscheinklasse-Hinzufügen</KeineBerechtigung>
+    <FahrschuelerVorhanden>Fahrschüler ist schon vorhanden</FahrschuelerVorhanden>
+    <VorUndNachnameDatum>Vor/Nachname und Geburtsdatum dürfen nciht leer sein</VorUndNachnameDatum>
+    <KeinZugriff>Zugriff verweigert: Token ungültig oder abgelaufen</KeinZugriff>
 </messages>

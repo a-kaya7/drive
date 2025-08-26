@@ -1,6 +1,7 @@
 package net.drive.config;
 
 import org.springframework.context.annotation.Configuration;
+
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -12,8 +13,10 @@ public class WebConfig implements WebMvcConfigurer {
           registry.addMapping("/**")
             .allowedOrigins("http://localhost:5173")
             .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
+            .allowedMethods("*")
             .allowedHeaders("*")
-            .allowCredentials(true);
+            .allowCredentials(true)
+            .exposedHeaders("Set-Cookie");
         
      
     }

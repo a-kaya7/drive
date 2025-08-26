@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 import { useNavigate} from "react-router-dom";
 import { FiEdit, FiTrash2 } from "react-icons/fi";
 import { FaUserEdit } from "react-icons/fa";
+import { api } from "../ApiConfig/api";
 
 const PRIMARY_COLOR = "#174bd1ff";
 
@@ -23,7 +23,8 @@ const BenutzergruppenListe: React.FC = () => {
 
   const fetchBenutzergruppen = async () => {
     try {
-      const response = await axios.get<Benutzergruppe[]>("http://localhost:8080/api/benutzergruppen");
+      const response = await api.get<Benutzergruppe[]>("/api/benutzergruppen");
+      console.log("API response:", response.data);
       setBenutzergruppen(response.data);
     } catch (err) {
       console.error("Fehler beim Laden der Benutzergruppen:", err);
@@ -33,7 +34,7 @@ const BenutzergruppenListe: React.FC = () => {
   const handleDelete = async (benutzergruppe: string) => {
     if (!window.confirm("Soll diese Benutzergruppe gelöscht werden?")) return;
     try {
-      await axios.delete(`http://localhost:8080/api/benutzergruppe/${benutzergruppe}`);
+      await api.delete(`/api/benutzergruppe/${benutzergruppe}`);
       setBenutzergruppen((prev) => prev.filter((g) => g.benutzergruppe !== benutzergruppe));
     } catch (e) {
       alert("Löschen fehlgeschlagen!");

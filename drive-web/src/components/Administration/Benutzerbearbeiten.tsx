@@ -1,9 +1,9 @@
 import React, { useEffect, useMemo, useState } from "react";
 import type { FormEvent, ChangeEvent } from "react";
-import axios from "axios";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { FaUserEdit } from "react-icons/fa"; 
 import { FiTrash2 } from "react-icons/fi";
+import { api } from "../ApiConfig/api";
 
 const PRIMARY_COLOR = "#174bd1ff";
 
@@ -39,8 +39,8 @@ const BenutzerBearbeiten: React.FC = () => {
     const fetchData = async () => {
       setLoading(true);
       try {
-        const { data } = await axios.get<User[]>(
-          "http://localhost:8080/api/benutzerlist"
+        const { data } = await api.get<User[]>(
+          "/api/benutzerlist"
         );
         setUsers(data);
       } catch (e) {
@@ -85,7 +85,7 @@ const BenutzerBearbeiten: React.FC = () => {
   const handleDeleteUser = async (benutzerkennung: string) => {
     if (!window.confirm("Soll dieser Benutzer gelöscht werden?")) return;
     try {
-      await axios.delete(`http://localhost:8080/api/benutzerloeschen/${benutzerkennung}`);
+      await api.delete(`/api/benutzerloeschen/${benutzerkennung}`);
       setUsers((prev) => prev.filter((u) => u.benutzerkennung !== benutzerkennung));
     } catch (e) {
       alert("Löschen fehlgeschlagen!");

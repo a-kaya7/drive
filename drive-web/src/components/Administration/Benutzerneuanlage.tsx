@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import type { FormEvent } from "react";
-import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
+import { api } from "../ApiConfig/api";
 
 const PRIMARY_COLOR = "#174bd1ff";
 
@@ -34,7 +34,7 @@ const BenutzerNeuanlage: React.FC = () => {
   useEffect(() => {
       const fetchMandanten = async () => {
         try {
-          const response = await axios.get("http://localhost:8080/api/mandantenlist");
+          const response = await api.get("/api/mandantenlist");
           setMandantListe(response.data);
         } catch (err) {
           console.error("Fehler beim Laden der Institute:", err);
@@ -49,7 +49,7 @@ const BenutzerNeuanlage: React.FC = () => {
     setErrorMessage(null);
 
     try {
-      await axios.post("http://localhost:8080/api/benutzerneuanlage", {
+      await api.post("/api/benutzerneuanlage", {
         benutzerkennung,
         anrede,
         vorname,

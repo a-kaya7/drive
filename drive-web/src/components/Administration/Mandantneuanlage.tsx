@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { api } from "../ApiConfig/api";
 
 const PRIMARY_COLOR = "#174bd1ff";
 
@@ -27,7 +27,7 @@ const MandantenNeuanlage = () => {
   useEffect(() => {
     const fetchInstitutes = async () => {
       try {
-        const response = await axios.get("http://localhost:8080/api/institutlist");
+        const response = await api.get("/api/institutlist");
         setInstituteListe(response.data);
       } catch (err) {
         console.error("Fehler beim Laden der Institute:", err);
@@ -44,7 +44,7 @@ const MandantenNeuanlage = () => {
     setLoading(true);
 
     try {
-      await axios.post("http://localhost:8080/api/mandantneuanlage", {
+      await api.post("/api/mandantneuanlage", {
         idname,
         beschreibung,
         institut,

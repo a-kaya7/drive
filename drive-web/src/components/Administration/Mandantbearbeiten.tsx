@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import type { FormEvent } from "react";
-import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
+import { api } from "../ApiConfig/api";
 
 const PRIMARY_COLOR = "#174bd1ff";
 
@@ -27,7 +27,7 @@ const Mandantbearbeiten: React.FC = () => {
   useEffect(() => {
     const fetchInstitut = async () => {
       try {
-        const res = await axios.get(`http://localhost:8080/api/mandant/${routeIdname}`);
+        const res = await api.get(`/api/mandant/${routeIdname}`);
         const data = res.data;
 
         setIdname(data.idname || "");
@@ -58,7 +58,7 @@ const Mandantbearbeiten: React.FC = () => {
     setLoading(true);
 
     try {
-      await axios.put(`http://localhost:8080/api/institutbearbeiten/${routeIdname}`, {
+      await api.put(`/api/institutbearbeiten/${routeIdname}`, {
         idname,
         beschreibung,
         institutsname,

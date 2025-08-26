@@ -11,7 +11,7 @@ interface Module {
 
 /* Modül liste */
 const modules: Module[] = [
-  { id: 1, title: "Fahrschülerprofile", description: "Fahrschüler verwalten", link: "/Fahrschueler" },
+  { id: 1, title: "Fahrschülerprofile", description: "Fahrschüler verwalten", link: "/fahrschueler" },
   { id: 2, title: "Unterrichtsverwaltung", description: "Admin-Bereich", link: "/mandanten" },
   { id: 3, title: "Prüfungs- und Testverwaltung", description: "Admin-Bereich", link: "/benutzergruppe" },
   { id: 4, title: "Zahlungsverwaltung", description: "Admin-Bereich", link: "/schueler-management" },

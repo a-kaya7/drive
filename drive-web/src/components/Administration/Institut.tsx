@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { FiEdit, FiTrash2 } from "react-icons/fi";
+import { api } from "../ApiConfig/api";
 
 const PRIMARY_COLOR = "#174bd1ff";
 
@@ -22,7 +22,7 @@ const InstitutListe: React.FC = () => {
 
   const fetchInstitute = async () => {
     try {
-      const response = await axios.get<Institute[]>("http://localhost:8080/api/institutlist");
+      const response = await api.get<Institute[]>("/api/institutlist");
       setInstitute(response.data);
     } catch (err) {
       console.error("Fehler beim Laden der Institute:", err);
@@ -32,7 +32,7 @@ const InstitutListe: React.FC = () => {
   const handleDelete = async (institutsname: string) => {
     if (!window.confirm("Soll dieses Institut gelöscht werden?")) return;
     try {
-      await axios.delete(`http://localhost:8080/api/institut/${institutsname}`);
+      await api.delete(`/api/institut/${institutsname}`);
       setInstitute((prev) => prev.filter((inst) => inst.institutsname !== institutsname));
     } catch (e: any) {
       const errorMessage =
