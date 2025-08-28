@@ -20,6 +20,7 @@ interface Fahrschueler {
    fuehrerscheinList: Fuehrerschein[];
   anmeldedatum: string | null;
   bezahlt: boolean;
+  mandant: string;
 }
 
 const FahrschuelerListen = () => {
@@ -42,6 +43,7 @@ const FahrschuelerListen = () => {
           telefonnummer: f.telefonnummer,
           bezahlt: f.bezahlt,
           fuehrerscheinList: f.fuehrerscheine.map((k: string) => ({ fuehrerscheinKlasse: k })),
+          mandant:f.mandant,
         }));
 
         setFahrschuelerList(formattedData);
@@ -127,6 +129,7 @@ const FahrschuelerListen = () => {
                   <th style={thStyle}>Telefonnummer</th>
                   <th style={thStyle}>Führerscheinklasse</th>
                   <th style={thStyle}>Anmeldengebühr</th>
+                  <th style={thStyle}>Mandant</th>
                   <th style={thStyle}>Aktion</th>
                 </tr>
               </thead>
@@ -147,6 +150,7 @@ const FahrschuelerListen = () => {
                         {u.fuehrerscheinList.map((f) => f.fuehrerscheinKlasse).join(", ") || "-"}
                       </td>
                       <td style={tdStyle}>{u.bezahlt ? "Ja" : "Nein"}</td>
+                      <td style={tdStyle}>{u.mandant ||"-"}</td>
                       <td style={tdStyle}>
                         <button
                           type="button"

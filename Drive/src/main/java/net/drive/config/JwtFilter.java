@@ -40,9 +40,11 @@ public class JwtFilter extends OncePerRequestFilter {
     	            Claims claims = jwtService.parseToken(token);  
     	            String benutzerkennung = claims.get("benutzerkennung", String.class);
     	            String benutzergruppe = claims.get("benutzergruppe", String.class);
+    	            String mandant = claims.get("mandant", String.class);
 
     	            request.setAttribute("benutzerkennung", benutzerkennung);
     	            request.setAttribute("benutzergruppe", benutzergruppe);
+    	            request.setAttribute("mandant", mandant);
 
     	            List<SimpleGrantedAuthority> authorities = List.of(new SimpleGrantedAuthority("ROLE_" + benutzergruppe));
     	            UsernamePasswordAuthenticationToken auth = 

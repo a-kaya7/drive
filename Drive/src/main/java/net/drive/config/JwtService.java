@@ -33,6 +33,7 @@ public class JwtService {
         		.setSubject(benutzer.getBenutzerkennung())
                 .claim("benutzergruppe", benutzer.getBenutzergruppe().getBenutzergruppe())
                 .claim("benutzerkennung", benutzer.getBenutzerkennung())
+                .claim("mandant", benutzer.getMandant().getIdname())
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
                 .signWith(key)
@@ -52,5 +53,8 @@ public class JwtService {
     
     public String getBenutzergruppeFromToken(String token) {
         return parseToken(token).get("benutzergruppe", String.class);
+    }
+    public String getMandantFromToken(String token) {
+        return parseToken(token).get("mandant", String.class);
     }
 }

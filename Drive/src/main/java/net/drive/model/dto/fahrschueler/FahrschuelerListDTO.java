@@ -10,7 +10,8 @@ public record FahrschuelerListDTO(
 	    LocalDate geburtsdatum,
 	    String telefonnummer,
 	    Set<String> fuehrerscheine,
-	    boolean bezahlt
+	    boolean bezahlt,
+	    String mandant
 		) {
 
 }
