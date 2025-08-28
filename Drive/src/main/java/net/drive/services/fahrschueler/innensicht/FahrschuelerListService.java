@@ -29,7 +29,8 @@ public class FahrschuelerListService implements IFahrschuelerListService{
 				e.getGeburtsdatum(),
 				e.getTelefonnummer(),
 				e.getFuehrerscheine().stream().map(Fuehrerschein::getFuehrerscheinKlasse).collect(Collectors.toSet()),
-				e.isBezahlt()
+				e.isBezahlt(),
+				e.getMandant()
 				
 				)).collect(Collectors.toList());	
 				

@@ -94,6 +94,9 @@ public class Fahrschueler {
 	@Column(name = "ersteller")
 	private String ersteller;
 	
+	@Column(name = "mandant")
+	private String mandant;
+	
 	
 	@Override
 	public boolean equals(Object o) {

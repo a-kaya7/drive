@@ -44,6 +44,7 @@ public class FahrschuelerNeuanlegenService implements IFahrschuelerNeuanlegenSer
     }
     
     private String benutzerkennung ="";
+    private String mandant ="";
     
     @Override
     @Transactional
@@ -56,8 +57,11 @@ public class FahrschuelerNeuanlegenService implements IFahrschuelerNeuanlegenSer
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
         	String token = authHeader.replace("Bearer ", "");
         	benutzerkennung = jwtService.getBenutzerkennungFromToken(token);
+        	mandant = jwtService.getMandantFromToken(token);
         }
         entity.setErsteller(benutzerkennung);
+        entity.setMandant(mandant);
+        
 
         entity.setFuehrerscheine(fuehrerscheinSet);
         Fahrschueler saved = fahrschuelerRepo.save(entity);
@@ -144,7 +148,9 @@ public class FahrschuelerNeuanlegenService implements IFahrschuelerNeuanlegenSer
             entity.getDokumente(),
             entity.getHinweis(),
             entity.getNotfallkontakt(),
-            entity.getErsteller()
+            entity.getErsteller(),
+            entity.getMandant()
+            
         );
     }
     
