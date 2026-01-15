@@ -55,10 +55,10 @@ public class FahrschuelerListServiceControllerTest {
             )
         );
 
-        // Servis mock
+        
         when(service.getAllFahrschueler()).thenReturn(list);
 
-        // Endpoint testen
+        
         mockMvc.perform(get("/api/fahrschuelerlist")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())

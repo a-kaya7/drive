@@ -30,10 +30,10 @@ public class FahrschuelerLoeschenControllerTest {
     void testDeleteFahrschueler() throws Exception {
         UUID fahrschuelerId = UUID.randomUUID();
 
-        // Servis mock
+        
         doNothing().when(service).deleteFahrschueler(any(UUID.class));
 
-        // Endpoint testen
+        
         mockMvc.perform(delete("/api/fahrschuelerloeschen/{fahrschuelerId}", fahrschuelerId))
                 .andExpect(status().isOk());
     }

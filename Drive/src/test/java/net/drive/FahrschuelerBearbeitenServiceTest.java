@@ -110,7 +110,7 @@ public class FahrschuelerBearbeitenServiceTest {
         assertEquals("InputOderID", ex.getMessage());
     }
 
-    // ✅ OR branch: ud null ama id dolu
+    
     @Test
     void updateFahrschueler_InputOderIdNull_Throws_InputNullOnly() {
         when(logicResource.getMessage("InputOderID")).thenReturn("InputOderID");
@@ -123,7 +123,7 @@ public class FahrschuelerBearbeitenServiceTest {
         assertEquals("InputOderID", ex.getMessage());
     }
 
-    // ✅ OR branch: ud dolu ama id null
+  
     @Test
     void updateFahrschueler_InputOderIdNull_Throws_IdNullOnly() {
         when(logicResource.getMessage("InputOderID")).thenReturn("InputOderID");
@@ -165,7 +165,7 @@ public class FahrschuelerBearbeitenServiceTest {
         assertEquals("NameFehlen", ex.getMessage());
     }
 
-    // ✅ NameFehlen branch: vorname null
+    
     @Test
     void updateFahrschueler_NameFehlen_Throws_VornameNull() {
         when(logicResource.getMessage("NameFehlen")).thenReturn("NameFehlen");
@@ -184,7 +184,7 @@ public class FahrschuelerBearbeitenServiceTest {
         assertEquals("NameFehlen", ex.getMessage());
     }
 
-    // ✅ NameFehlen branch: nachname null
+   
     @Test
     void updateFahrschueler_NameFehlen_Throws_NachnameNull() {
         when(logicResource.getMessage("NameFehlen")).thenReturn("NameFehlen");
@@ -217,10 +217,10 @@ public class FahrschuelerBearbeitenServiceTest {
         verifyNoInteractions(fuehrerscheinRepo);
     }
 
-    // ✅ empty-set branch: null değil ama empty => if'e girmemeli
+    
     @Test
     void updateFahrschueler_FuehrerscheineEmpty_Allows_NoRepoCalls() {
-        update.setFuehrerscheine(Set.of()); // empty set
+        update.setFuehrerscheine(Set.of()); 
 
         when(fahrschuelerRepo.findByFahrschuelerId(fahrschuelerId))
                 .thenReturn(Optional.of(existing));
@@ -234,7 +234,7 @@ public class FahrschuelerBearbeitenServiceTest {
 
     @Test
     void updateFahrschueler_WithoutFuehrerschein_HappyPath() {
-        // update.fuehrerscheine setup() içinde boş HashSet => if'e girmez
+       
         when(fahrschuelerRepo.findByFahrschuelerId(fahrschuelerId))
                 .thenReturn(Optional.of(existing));
         when(fahrschuelerRepo.save(any())).thenAnswer(i -> i.getArgument(0));
@@ -267,7 +267,7 @@ public class FahrschuelerBearbeitenServiceTest {
         verify(fuehrerscheinRepo, atLeastOnce()).findByFuehrerscheinId(any());
     }
 
-    // ✅ Optional.empty branch: fuehrerschein bulunamazsa eklenmemeli
+    
     @Test
     void updateFahrschueler_WithFuehrerschein_NotFound_Ignored() {
         Fuehrerschein fs = new Fuehrerschein();
@@ -289,17 +289,17 @@ public class FahrschuelerBearbeitenServiceTest {
         verify(fuehrerscheinRepo, atLeastOnce()).findByFuehrerscheinId(any());
     }
 
-    // ✅ Eski fuehrerscheine temizleme branch'ini daha güçlü test (remove/clear)
+    
     @Test
     void updateFahrschueler_ReplacesExistingFuehrerscheine_RemovesOldAndAddsNew() {
-        // existing'te eski bir fuehrerschein olsun
+       
         Fuehrerschein oldFs = new Fuehrerschein();
         oldFs.setFuehrerscheinId(UUID.randomUUID());
         oldFs.setFahrschueler(new HashSet<>());
         oldFs.getFahrschueler().add(existing);
         existing.getFuehrerscheine().add(oldFs);
 
-        // update ile yeni fuehrerschein gelsin
+        
         Fuehrerschein newFsRequest = new Fuehrerschein();
         newFsRequest.setFuehrerscheinId(UUID.randomUUID());
         newFsRequest.setFahrschueler(new HashSet<>());
@@ -318,14 +318,14 @@ public class FahrschuelerBearbeitenServiceTest {
         Fahrschueler result = service.updateFahrschueler(update, fahrschuelerId);
 
         assertNotNull(result);
-        // eski temizlenmiş, yeni eklenmiş olmalı
+       
         assertEquals(1, result.getFuehrerscheine().size());
         assertTrue(result.getFuehrerscheine().contains(newFsFromRepo));
         assertFalse(result.getFuehrerscheine().contains(oldFs));
 
-        // eski ilişki kaldırılmış olmalı
+        
         assertFalse(oldFs.getFahrschueler().contains(existing));
-        // yeni ilişki eklenmiş olmalı
+        
         assertTrue(newFsFromRepo.getFahrschueler().contains(existing));
     }
 }
