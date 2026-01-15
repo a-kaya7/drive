@@ -21,8 +21,19 @@ import net.drive.repository.administration.allgemein.organisation.IFuehrerschein
 import net.drive.repository.fahrschueler.IFahrschuelerRepository;
 import net.drive.services.fahrschueler.aussensicht.IFahrschuelerNeuanlegenService;
 
+/**
+ * Service-Klasse zum Anlegen eines neuen Fahrschülers (Innensicht).
+ * <p>
+ * Diese Klasse übernimmt:
+ * <ul>
+ *   <li>Validierung der Eingabedaten</li>
+ *   <li>Mapping von DTO zu Entity und zurück</li>
+ *   <li>Zuordnung von Führerscheinen</li>
+ *   <li>Setzen von Ersteller und Mandant aus dem JWT</li>
+ * </ul>
+ * </p>
+ */
 @Service
-
 public class FahrschuelerNeuanlegenService implements IFahrschuelerNeuanlegenService {
 
     private final IFahrschuelerRepository fahrschuelerRepo;
@@ -46,6 +57,17 @@ public class FahrschuelerNeuanlegenService implements IFahrschuelerNeuanlegenSer
     private String benutzerkennung ="";
     private String mandant ="";
     
+    /**
+     * Legt einen neuen Fahrschüler an.
+     * <p>
+     * Die Methode ist transaktional, um konsistentes Speichern
+     * von Fahrschüler und Führerscheinen sicherzustellen.
+     * </p>
+     *
+     * @param fahrschuelerDto Eingabedaten des Fahrschülers
+     * @param request         HTTP-Request zur Extraktion des JWT-Tokens
+     * @return gespeicherter Fahrschüler als DTO
+     */
     @Override
     @Transactional
     public FahrschuelerDTO createFahrschueler(FahrschuelerDTO fahrschuelerDto, HttpServletRequest  request) {
@@ -53,6 +75,7 @@ public class FahrschuelerNeuanlegenService implements IFahrschuelerNeuanlegenSer
  
         Fahrschueler entity = mapToEntity(fahrschuelerDto);
         
+        // JWT aus dem Authorization-Header auslesen
         String authHeader = request.getHeader("Authorization");
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
         	String token = authHeader.substring(7);
