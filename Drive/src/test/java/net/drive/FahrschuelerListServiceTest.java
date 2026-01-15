@@ -51,7 +51,7 @@ public class FahrschuelerListServiceTest {
         fahrschueler.setFuehrerscheine(Set.of(fs));
     }
 
-    // ✅ Branch: entities == null
+    
     @Test
     void getAllFahrschueler_NullList_ReturnsEmpty() {
         when(fahrschuelerRepo.findAll()).thenReturn(null);
@@ -85,7 +85,7 @@ void getAllFahrschueler_ListContainsNullEntity_IgnoresNull() {
 }
 
 
-    // ✅ Branch: e.getFuehrerscheine() == null
+    
     @Test
     void getAllFahrschueler_FuehrerscheineNull_MapsToEmptySet() {
         Fahrschueler s = new Fahrschueler();
@@ -105,7 +105,7 @@ void getAllFahrschueler_ListContainsNullEntity_IgnoresNull() {
         assertTrue(result.get(0).fuehrerscheine().isEmpty());
     }
 
-    // ✅ Branch: e.getFuehrerscheine() empty
+    
     @Test
     void getAllFahrschueler_FuehrerscheineEmpty_MapsToEmptySet() {
         Fahrschueler s = new Fahrschueler();
@@ -115,7 +115,7 @@ void getAllFahrschueler_ListContainsNullEntity_IgnoresNull() {
         s.setTelefonnummer("111");
         s.setBezahlt(true);
         s.setMandant("M2");
-        s.setFuehrerscheine(Set.of()); // empty
+        s.setFuehrerscheine(Set.of()); 
 
         when(fahrschuelerRepo.findAll()).thenReturn(List.of(s));
 
@@ -140,8 +140,8 @@ void getAllFahrschueler_FuehrerscheinOrKlasseNull_AreFilteredOut() {
     fsNullClass.setFahrschueler(new HashSet<>());
 
     HashSet<Fuehrerschein> set = new HashSet<>();
-    set.add(null);         // ✅ null eleman ekledik
-    set.add(fsNullClass);  // ✅ klasse null
+    set.add(null);        
+    set.add(fsNullClass); 
     s.setFuehrerscheine(set);
 
     when(fahrschuelerRepo.findAll()).thenReturn(List.of(s));

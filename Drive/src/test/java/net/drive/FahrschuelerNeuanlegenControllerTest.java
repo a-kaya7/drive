@@ -33,7 +33,7 @@ public class FahrschuelerNeuanlegenControllerTest {
 
     @Test
     void testCreateFahrschueler() throws Exception {
-    	 // Record 
+    	
         FahrschuelerDTO dto = new FahrschuelerDTO(
             UUID.randomUUID(),        // fahrschuelerId
             "Max",                    // vorname
@@ -57,7 +57,7 @@ public class FahrschuelerNeuanlegenControllerTest {
         when(service.createFahrschueler(any(FahrschuelerDTO.class), any()))
             .thenReturn(dto);
 
-        // Endpoint testen
+        
         mockMvc.perform(post("/api/fahrschuelerneuanlage")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{\"vorname\":\"Max\",\"nachname\":\"Mustermann\",\"bezahlt\":false}"))

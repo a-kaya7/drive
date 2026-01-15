@@ -86,7 +86,6 @@ public class FahrschuelerNeuanlegenServiceTest {
                 null                            // mandant
         );
 
-        // default: fuehrerschein found (NPE riskini engelle)
         Fuehrerschein fs = new Fuehrerschein();
         fs.setFuehrerscheinId(fuehrerscheinId);
         fs.setFahrschueler(new HashSet<>());
@@ -111,7 +110,7 @@ public class FahrschuelerNeuanlegenServiceTest {
         verify(fahrschuelerRepo).save(any());
     }
 
-    // ✅ Bearer token branch
+    
     @Test
     void createFahrschueler_WithBearerToken_SetsErstellerAndMandant() {
         when(fahrschuelerRepo.existsByNachnameAndGeburtsdatum(anyString(), any(LocalDate.class)))
@@ -134,7 +133,7 @@ public class FahrschuelerNeuanlegenServiceTest {
         verify(jwtService).getMandantFromToken("token123");
     }
 
-    // ✅ authHeader null branch
+  
     @Test
     void createFahrschueler_AuthHeaderNull_DoesNotCallJwtService() {
         when(fahrschuelerRepo.existsByNachnameAndGeburtsdatum(anyString(), any(LocalDate.class)))
@@ -153,7 +152,6 @@ public class FahrschuelerNeuanlegenServiceTest {
         verifyNoInteractions(jwtService);
     }
 
-    // ✅ Non-bearer auth header branch (jwtService çağrılmamalı)
     @Test
     void createFahrschueler_WithNonBearerAuthHeader_DoesNotCallJwtService() {
         when(fahrschuelerRepo.existsByNachnameAndGeburtsdatum(anyString(), any(LocalDate.class)))
@@ -172,7 +170,7 @@ public class FahrschuelerNeuanlegenServiceTest {
         verifyNoInteractions(jwtService);
     }
 
-    // Null Vorname
+    
     @Test
     void createFahrschueler_NullVorname_Throws() {
         FahrschuelerDTO dto = new FahrschuelerDTO(
@@ -201,7 +199,7 @@ public class FahrschuelerNeuanlegenServiceTest {
         assertTrue(ex.getMessage().contains("VorUndNachnameDatum"));
     }
 
-    // Null Nachname
+    
     @Test
     void createFahrschueler_NullNachname_Throws() {
         FahrschuelerDTO dto = new FahrschuelerDTO(
@@ -230,7 +228,7 @@ public class FahrschuelerNeuanlegenServiceTest {
         assertTrue(ex.getMessage().contains("VorUndNachnameDatum"));
     }
 
-    // Null Geburtsdatum
+   
     @Test
     void createFahrschueler_NullGeburtsdatum_Throws() {
         FahrschuelerDTO dto = new FahrschuelerDTO(
@@ -259,12 +257,11 @@ public class FahrschuelerNeuanlegenServiceTest {
         assertTrue(ex.getMessage().contains("VorUndNachnameDatum"));
     }
 
-    // Empty Vorname (boş string kabul ediliyorsa)
     @Test
     void createFahrschueler_EmptyVorname_Allows() {
         FahrschuelerDTO dto = new FahrschuelerDTO(
                 validDto.fahrschuelerId(),
-                "", // empty
+                "",
                 validDto.nachname(),
                 validDto.geburtsdatum(),
                 validDto.adresse(),
@@ -290,7 +287,7 @@ public class FahrschuelerNeuanlegenServiceTest {
         verify(fahrschuelerRepo, never()).existsByNachnameAndGeburtsdatum(anyString(), any(LocalDate.class));
     }
 
-    // Null Email
+    
     @Test
     void createFahrschueler_NullEmail_Allows() {
         FahrschuelerDTO dto = new FahrschuelerDTO(
@@ -310,7 +307,7 @@ public class FahrschuelerNeuanlegenServiceTest {
         assertNull(result.email());
     }
 
-    // Empty Fuehrerschein
+    
     @Test
     void createFahrschueler_EmptyFuehrerschein_Allows() {
         FahrschuelerDTO dto = new FahrschuelerDTO(
@@ -330,7 +327,6 @@ public class FahrschuelerNeuanlegenServiceTest {
         assertTrue(result.fuehrerscheine().isEmpty());
     }
 
-    // ✅ Fuehrerscheine null branch
     @Test
     void createFahrschueler_FuehrerscheineNull_AllowsAndNoFuehrerscheinRepoCalls() {
         FahrschuelerDTO dto = new FahrschuelerDTO(
@@ -341,7 +337,7 @@ public class FahrschuelerNeuanlegenServiceTest {
                 validDto.adresse(),
                 validDto.telefonnummer(),
                 validDto.email(),
-                null, // 👈 fuehrerscheine null
+                null,
                 validDto.anmeldedatum(),
                 validDto.pruefungsstatus(),
                 validDto.bezahlt(),
@@ -364,7 +360,6 @@ public class FahrschuelerNeuanlegenServiceTest {
         verifyNoInteractions(fuehrerscheinRepo);
     }
 
-    // ✅ Fuehrerschein present: result set dolmalı
     @Test
     void createFahrschueler_FuehrerscheinPresent_AddsFuehrerscheinToResult() {
         when(fahrschuelerRepo.existsByNachnameAndGeburtsdatum(anyString(), any(LocalDate.class)))
@@ -380,7 +375,6 @@ public class FahrschuelerNeuanlegenServiceTest {
         verify(fuehrerscheinRepo, atLeastOnce()).findByFuehrerscheinId(fuehrerscheinId);
     }
 
-    // ✅ Fuehrerschein not found branch (Optional.empty)
     @Test
     void createFahrschueler_FuehrerscheinNotFound_IsIgnored() {
         when(fahrschuelerRepo.existsByNachnameAndGeburtsdatum(anyString(), any(LocalDate.class)))
@@ -396,7 +390,6 @@ public class FahrschuelerNeuanlegenServiceTest {
         assertTrue(result.fuehrerscheine().isEmpty());
     }
 
-    // Duplicate Check
     @Test
     void createFahrschueler_DuplicateCheck_Throws() {
         when(fahrschuelerRepo.existsByNachnameAndGeburtsdatum(anyString(), any(LocalDate.class)))
