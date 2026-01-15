@@ -28,6 +28,9 @@
     <KeinFuehrerschein>Führerscheinklasse  darf nicht leer sein</KeinFuehrerschein>
     <KeineBerechtigung>Sie haben keine Berechtigung zum Führerscheinklasse-Hinzufügen</KeineBerechtigung>
     <FahrschuelerVorhanden>Fahrschüler ist schon vorhanden</FahrschuelerVorhanden>
-    <VorUndNachnameDatum>Vor/Nachname und Geburtsdatum dürfen nciht leer sein</VorUndNachnameDatum>
+    <VorUndNachnameDatum>Vor/Nachname und Geburtsdatum dürfen nicht leer sein</VorUndNachnameDatum>
     <KeinZugriff>Zugriff verweigert: Token ungültig oder abgelaufen</KeinZugriff>
+    <NameFehlen>Vorname oder Nachname fehlt</NameFehlen>
+    <IDNull>ID darf nicht null sein</IDNull>
+    <InputOderID>Fahrschueler oder ID ist null</InputOderID>
 </messages>

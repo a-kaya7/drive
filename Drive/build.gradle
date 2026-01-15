@@ -2,6 +2,7 @@ plugins {
 	id 'java'
 	id 'org.springframework.boot' version '3.5.4'
 	id 'io.spring.dependency-management' version '1.1.7'
+	id 'jacoco'
 }
 
 group = 'net.drive'
@@ -40,9 +41,40 @@ dependencies {
 	implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
     runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.5'
     runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.11.5'
-	
+
+    // JAXB
+    implementation 'jakarta.xml.bind:jakarta.xml.bind-api:4.0.0'
+    implementation 'org.glassfish.jaxb:jaxb-runtime:4.0.0'
+
+	implementation 'org.springframework.boot:spring-boot-starter-aop'
+   // implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    //implementation 'io.micrometer:micrometer-core'
+    //implementation 'io.micrometer:micrometer-registry-prometheus'
 }
 
-tasks.named('test') {
+/**
+ * JaCoCo sürümü
+ */
+jacoco {
+	toolVersion = "0.8.11"
+}
+
+/**
+ * Test çalışınca otomatik JaCoCo raporu da üretsin
+ */
+tasks.test {
 	useJUnitPlatform()
+	finalizedBy tasks.jacocoTestReport
+}
+
+/**
+ * Coverage raporları (HTML + XML)
+ */
+tasks.jacocoTestReport {
+	dependsOn tasks.test
+	reports {
+		html.required = true
+		xml.required = true
+		csv.required = false
+	}
 }
