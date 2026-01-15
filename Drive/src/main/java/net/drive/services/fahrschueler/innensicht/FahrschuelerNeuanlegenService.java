@@ -7,8 +7,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import jakarta.servlet.http.HttpServletRequest;
 
+import java.util.HashSet;
 import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 import net.drive.config.JwtService;
@@ -48,23 +48,24 @@ public class FahrschuelerNeuanlegenService implements IFahrschuelerNeuanlegenSer
     
     @Override
     @Transactional
-    public FahrschuelerDTO createFahrschuler(FahrschuelerDTO fahrschuelerDto, HttpServletRequest  request) {
+    public FahrschuelerDTO createFahrschueler(FahrschuelerDTO fahrschuelerDto, HttpServletRequest  request) {
         validateInput(fahrschuelerDto);
  
         Fahrschueler entity = mapToEntity(fahrschuelerDto);
-        Set<Fuehrerschein> fuehrerscheinSet = loadFuehrerscheine(fahrschuelerDto);
+        
         String authHeader = request.getHeader("Authorization");
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
-        	String token = authHeader.replace("Bearer ", "");
+        	String token = authHeader.substring(7);
         	benutzerkennung = jwtService.getBenutzerkennungFromToken(token);
         	mandant = jwtService.getMandantFromToken(token);
         }
         entity.setErsteller(benutzerkennung);
         entity.setMandant(mandant);
         
-
-        entity.setFuehrerscheine(fuehrerscheinSet);
         Fahrschueler saved = fahrschuelerRepo.save(entity);
+        Set<Fuehrerschein> fuehrerscheinSet = loadFuehrerscheine(fahrschuelerDto, saved);
+        saved.setFuehrerscheine(fuehrerscheinSet);
+        
         return mapToDto(saved);
     }
 
@@ -80,16 +81,15 @@ public class FahrschuelerNeuanlegenService implements IFahrschuelerNeuanlegenSer
         }
     }
 
-    private Set<Fuehrerschein> loadFuehrerscheine(FahrschuelerDTO dto) {
-        Set<Fuehrerschein> fuehrerscheinSet = ConcurrentHashMap.newKeySet(); // Thread-safe 
+    private Set<Fuehrerschein> loadFuehrerscheine(FahrschuelerDTO dto, Fahrschueler entity) {
+        Set<Fuehrerschein> fuehrerscheinSet = new HashSet<>();
         
         if (dto.fuehrerscheine() != null) {
-            dto.fuehrerscheine().parallelStream().forEach(fDto -> {
+            dto.fuehrerscheine().forEach(fDto -> {
                 fuehrerscheinRepo.findByFuehrerscheinId(fDto.fuehrerscheinId())
                     .ifPresent(fuehrerschein -> {
                         fuehrerscheinSet.add(fuehrerschein);
-                        
-                        fuehrerschein.getFahrschueler().add(mapToEntity(dto));
+                        fuehrerschein.getFahrschueler().add(entity);
                     });
             });
         }
@@ -122,8 +122,8 @@ public class FahrschuelerNeuanlegenService implements IFahrschuelerNeuanlegenSer
         }
 
         Set<FuehrerscheinDTO> fuehrerscheinDtoSet = entity.getFuehrerscheine() == null ?
-            ConcurrentHashMap.newKeySet() :
-            entity.getFuehrerscheine().parallelStream()
+            Set.of() :
+            entity.getFuehrerscheine().stream()
                 .map(f -> new FuehrerscheinDTO(
                     f.getFuehrerscheinId(),
                     f.getFuehrerscheinKlasse(),
@@ -131,7 +131,7 @@ public class FahrschuelerNeuanlegenService implements IFahrschuelerNeuanlegenSer
                     0,
                     null
                 ))
-                .collect(Collectors.toSet());
+                .collect(Collectors.toUnmodifiableSet());
 
         return new FahrschuelerDTO(
             entity.getFahrschuelerId(),

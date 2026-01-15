@@ -11,19 +11,26 @@ import jakarta.servlet.http.HttpServletRequest;
 import net.drive.model.dto.fahrschueler.FahrschuelerDTO;
 import net.drive.services.fahrschueler.aussensicht.IFahrschuelerNeuanlegenService;
 
-
+/**
+ * REST-Controller zum Anlegen neuer Fahrschüler.
+ * <p>
+ * Dieser Controller stellt einen Endpunkt zur Verfügung, über den ein neuer
+ * Fahrschüler anhand der übergebenen DTO-Daten erstellt wird.
+ * </p>
+ */
 @RestController
 @RequestMapping("/api")
 public class FahrschuelerNeuanlegenController {
 
 	private final IFahrschuelerNeuanlegenService fahrschueler;
-	
+
 	public FahrschuelerNeuanlegenController(IFahrschuelerNeuanlegenService fahrschueler) {
 		this.fahrschueler = fahrschueler;
 	}
-	
+
 	@PostMapping("/fahrschuelerneuanlage")
-	public ResponseEntity<FahrschuelerDTO> createFahrschueler(@RequestBody FahrschuelerDTO fahrschuelerDto, HttpServletRequest request){
-				return ResponseEntity.ok(fahrschueler.createFahrschuler(fahrschuelerDto, request));
+	public ResponseEntity<FahrschuelerDTO> createFahrschueler(@RequestBody FahrschuelerDTO fahrschuelerDto,
+			HttpServletRequest request) {
+		return ResponseEntity.ok(fahrschueler.createFahrschueler(fahrschuelerDto, request));
 	}
 }

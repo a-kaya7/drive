@@ -5,6 +5,6 @@ import net.drive.model.dto.fahrschueler.FahrschuelerDTO;
 
 public interface IFahrschuelerNeuanlegenService {
 	
-	FahrschuelerDTO createFahrschuler(FahrschuelerDTO fahrschuelerDto, HttpServletRequest request);
+	FahrschuelerDTO createFahrschueler(FahrschuelerDTO fahrschuelerDto, HttpServletRequest request);
 
 }

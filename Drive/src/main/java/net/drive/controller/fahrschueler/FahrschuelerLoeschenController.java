@@ -10,18 +10,25 @@ import org.springframework.web.bind.annotation.RestController;
 
 import net.drive.services.fahrschueler.aussensicht.IFahrschuelerLoeschenService;
 
+/**
+ * REST-Controller zum Löschen von Fahrschülern.
+ * <p>
+ * Dieser Controller stellt einen Endpunkt zur Verfügung, über den ein
+ * Fahrschüler anhand seiner UUID aus dem System entfernt werden kann.
+ * </p>
+ */
 @RestController
 @RequestMapping("/api")
 public class FahrschuelerLoeschenController {
-	
+
 	private final IFahrschuelerLoeschenService fahrschuelerService;
-	
+
 	public FahrschuelerLoeschenController(IFahrschuelerLoeschenService fahrschuelerService) {
 		this.fahrschuelerService = fahrschuelerService;
 	}
-	
+
 	@DeleteMapping("/fahrschuelerloeschen/{fahrschuelerId}")
-	public ResponseEntity<?> deleteFahrschueler(@PathVariable("fahrschuelerId") UUID fahrschuelerId){
+	public ResponseEntity<?> deleteFahrschueler(@PathVariable("fahrschuelerId") UUID fahrschuelerId) {
 		fahrschuelerService.deleteFahrschueler(fahrschuelerId);
 		return ResponseEntity.ok().body(null);
 	}
