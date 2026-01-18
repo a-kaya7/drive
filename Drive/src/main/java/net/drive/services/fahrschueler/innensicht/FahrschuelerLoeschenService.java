@@ -42,10 +42,8 @@ public class FahrschuelerLoeschenService implements IFahrschuelerLoeschenService
 			throw new IllegalArgumentException(logicResource.getMessage("KeinFahrschüler"));
 		}
 
-		Fahrschueler fahrschueler = fahrschuelerRepo.findByFahrschuelerId(fahrschuelerId)
-				.orElseThrow(() -> new IllegalArgumentException(logicResource.getMessage("KeinFahrschüler")));
-
-		fahrschuelerRepo.delete(fahrschueler);
+		fahrschuelerRepo.findByFahrschuelerId(fahrschuelerId)
+        .ifPresent(fahrschuelerRepo::delete);
 	}
 
 }
