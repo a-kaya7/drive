@@ -18,6 +18,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
+import net.drive.model.datentypen.Adresse;
 import net.drive.model.dto.fahrschueler.FahrschuelerListDTO;
 import net.drive.services.fahrschueler.aussensicht.IFahrschuelerListService;
 
@@ -33,12 +34,17 @@ public class FahrschuelerListServiceControllerTest {
 
     @Test
     void testGetAllFahrschueler() throws Exception {
+    	
+    	Adresse adr1 = new Adresse();
+        Adresse adr2 = new Adresse();
         // Test
         List<FahrschuelerListDTO> list = List.of(
             new FahrschuelerListDTO(
                 UUID.randomUUID(),
                 "Mustermann",
+                "max",
                 LocalDate.of(2000, 1, 1),
+                adr1,
                 "0123456789",
                 new HashSet<>(List.of("B")),
                 true,
@@ -47,7 +53,9 @@ public class FahrschuelerListServiceControllerTest {
             new FahrschuelerListDTO(
                 UUID.randomUUID(),
                 "Müller",
+                "Anna",
                 LocalDate.of(1995, 5, 10),
+                adr2,
                 "0987654321",
                 new HashSet<>(List.of("A", "BE")),
                 false,
