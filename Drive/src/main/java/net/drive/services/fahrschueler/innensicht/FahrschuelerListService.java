@@ -65,8 +65,16 @@ public class FahrschuelerListService implements IFahrschuelerListService {
 								.collect(Collectors.toUnmodifiableSet());
 					}
 
-					return new FahrschuelerListDTO(e.getFahrschuelerId(), e.getNachname(), e.getGeburtsdatum(),
-							e.getTelefonnummer(), klassen, e.isBezahlt(), e.getMandant());
+					return new FahrschuelerListDTO(
+							e.getFahrschuelerId(),
+							e.getVorname(),
+							e.getNachname(), 
+							e.getGeburtsdatum(),
+							e.getAdresse(),
+							e.getTelefonnummer(),
+							klassen, 
+							e.isBezahlt(), 
+							e.getMandant());
 				})
 				.toList();
 	}
