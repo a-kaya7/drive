@@ -30,7 +30,7 @@ public class FahrschuelerLoeschenController {
 	@DeleteMapping("/fahrschuelerloeschen/{fahrschuelerId}")
 	public ResponseEntity<?> deleteFahrschueler(@PathVariable("fahrschuelerId") UUID fahrschuelerId) {
 		fahrschuelerService.deleteFahrschueler(fahrschuelerId);
-		return ResponseEntity.ok().body(null);
+		return ResponseEntity.noContent().build();
 	}
 
 }

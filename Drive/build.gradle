@@ -53,14 +53,14 @@ dependencies {
 }
 
 /**
- * JaCoCo sürümü
+ * JaCoCo 
  */
 jacoco {
 	toolVersion = "0.8.11"
 }
 
 /**
- * Test çalışınca otomatik JaCoCo raporu da üretsin
+ * 
  */
 tasks.test {
 	useJUnitPlatform()
@@ -68,7 +68,7 @@ tasks.test {
 }
 
 /**
- * Coverage raporları (HTML + XML)
+ * Coverage 
  */
 tasks.jacocoTestReport {
 	dependsOn tasks.test
