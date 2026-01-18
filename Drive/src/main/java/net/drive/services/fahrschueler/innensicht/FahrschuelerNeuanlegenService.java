@@ -93,11 +93,12 @@ public class FahrschuelerNeuanlegenService implements IFahrschuelerNeuanlegenSer
     }
 
     private void validateInput(FahrschuelerDTO dto) {
-        if (dto.vorname() != null && !dto.vorname().isEmpty()) {
-            if (fahrschuelerRepo.existsByNachnameAndGeburtsdatum(dto.nachname(), dto.geburtsdatum())) {
-                throw new IllegalArgumentException(logicResource.getMessage("FahrschuelerVorhanden"));
-            }
-        }
+    	if (dto.vorname() != null && !dto.vorname().isEmpty()) {
+    	    if (fahrschuelerRepo.existsByNachnameAndGeburtsdatum(dto.nachname(), dto.geburtsdatum())) {
+    	        throw new IllegalArgumentException("Fahrschüler ist schon vorhanden");
+    	    }
+    	}
+
         
         if (dto.vorname() == null || dto.nachname() == null || dto.geburtsdatum() == null) {
             throw new IllegalArgumentException(logicResource.getMessage("VorUndNachnameDatum"));
