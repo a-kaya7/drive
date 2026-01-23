@@ -5,6 +5,7 @@ import java.util.Set;
 import java.util.UUID;
 
 import net.drive.model.datentypen.Adresse;
+import net.drive.model.entities.fahrschueler.Pruefungsstatus;
 
 public record FahrschuelerListDTO(
 		UUID fahrschuelerId,
@@ -15,6 +16,7 @@ public record FahrschuelerListDTO(
 	    String telefonnummer,
 	    Set<String> fuehrerscheine,
 	    boolean bezahlt,
+	    Pruefungsstatus pruefungsstatus,
 	    String mandant
 		) {
 
