@@ -1,9 +1,11 @@
 package net.drive;
 
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+
+import static org.hamcrest.Matchers.hasSize;
 
 import java.time.LocalDate;
 import java.util.HashSet;
@@ -20,11 +22,12 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import net.drive.model.datentypen.Adresse;
 import net.drive.model.dto.fahrschueler.FahrschuelerListDTO;
+import net.drive.model.entities.fahrschueler.Pruefungsstatus;
 import net.drive.services.fahrschueler.aussensicht.IFahrschuelerListService;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-public class FahrschuelerListServiceControllerTest {
+class FahrschuelerListServiceControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
@@ -33,48 +36,55 @@ public class FahrschuelerListServiceControllerTest {
     private IFahrschuelerListService service;
 
     @Test
-    void testGetAllFahrschueler() throws Exception {
-    	
-    	Adresse adr1 = new Adresse();
+    void testGetFahrschuelerList() throws Exception {
+
+        Adresse adr1 = new Adresse();
         Adresse adr2 = new Adresse();
-        // Test
+
         List<FahrschuelerListDTO> list = List.of(
             new FahrschuelerListDTO(
                 UUID.randomUUID(),
+                "Max",
                 "Mustermann",
-                "max",
                 LocalDate.of(2000, 1, 1),
                 adr1,
                 "0123456789",
                 new HashSet<>(List.of("B")),
                 true,
+                Pruefungsstatus.THEORIE_BESTANDEN,
                 "Mandant1"
             ),
             new FahrschuelerListDTO(
                 UUID.randomUUID(),
-                "Müller",
                 "Anna",
+                "Müller",
                 LocalDate.of(1995, 5, 10),
                 adr2,
                 "0987654321",
                 new HashSet<>(List.of("A", "BE")),
                 false,
+                Pruefungsstatus.NOCH_OFFEN,
                 "Mandant2"
             )
         );
 
-        
-        when(service.getAllFahrschueler()).thenReturn(list);
+        when(service.getFahrschuelerBenchmark(any(), any(), any(), any())).thenReturn(list);
 
-        
         mockMvc.perform(get("/api/fahrschuelerlist")
                 .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.length()").value(2))
-                .andExpect(jsonPath("$[0].nachname").value("Mustermann"))
-                .andExpect(jsonPath("$[0].bezahlt").value(true))
-                .andExpect(jsonPath("$[1].nachname").value("Müller"))
-                .andExpect(jsonPath("$[1].fuehrerscheine.length()").value(2))
-                .andExpect(jsonPath("$[1].bezahlt").value(false));
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$", hasSize(2)))
+
+            .andExpect(jsonPath("$[0].vorname").value("Max"))
+            .andExpect(jsonPath("$[0].nachname").value("Mustermann"))
+            .andExpect(jsonPath("$[0].bezahlt").value(true))
+            .andExpect(jsonPath("$[0].fuehrerscheine", hasSize(1)))
+            .andExpect(jsonPath("$[0].pruefungsstatus").value("THEORIE_BESTANDEN"))
+
+            .andExpect(jsonPath("$[1].vorname").value("Anna"))
+            .andExpect(jsonPath("$[1].nachname").value("Müller"))
+            .andExpect(jsonPath("$[1].bezahlt").value(false))
+            .andExpect(jsonPath("$[1].fuehrerscheine", hasSize(2)))
+            .andExpect(jsonPath("$[1].pruefungsstatus").value("NOCH_OFFEN"));
     }
 }
