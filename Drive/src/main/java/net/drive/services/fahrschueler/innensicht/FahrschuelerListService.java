@@ -47,7 +47,7 @@ public class FahrschuelerListService implements IFahrschuelerListService {
             Boolean bezahlt,
             String status
     ) {
-        // Fal 1: filtre yok => tüm liste (20.000)
+        // Fal 1:  (20.000)
         if (isBlank(klasse) && ageMax == null && bezahlt == null && isBlank(status)) {
             return getAllFahrschueler();
         }
