@@ -20,7 +20,7 @@ public interface IFahrschuelerRepository extends JpaRepository<Fahrschueler, UUI
     Optional<Fahrschueler> findFarhschuelerByVorname(String vorname);
     Optional<Fahrschueler> findByFahrschuelerId(UUID fahrschuelerId);
 
-    // Senaryo 2: sadece Klasse B
+    // Fall 2: nur B Klasse
     @Query("""
         SELECT DISTINCT f
         FROM Fahrschueler f
@@ -29,7 +29,7 @@ public interface IFahrschuelerRepository extends JpaRepository<Fahrschueler, UUI
     """)
     List<Fahrschueler> findByFuehrerscheinKlasse(@Param("klasse") String klasse);
 
-    // Senaryo 3: Klasse B + 30 yaş altı
+    // Fall 3: Klasse B + unter 30 
     @Query("""
         SELECT DISTINCT f
         FROM Fahrschueler f
@@ -42,7 +42,7 @@ public interface IFahrschuelerRepository extends JpaRepository<Fahrschueler, UUI
             @Param("bornAfter") LocalDate bornAfter
     );
 
-    // Senaryo 4: Klasse B + bezahlt=true + status=NOCH_OFFEN
+    // Fall 4: Klasse B + bezahlt=true + status=THOERI_BESTANDEN
     @Query("""
         SELECT DISTINCT f
         FROM Fahrschueler f
