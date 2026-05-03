@@ -8,8 +8,8 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import jakarta.transaction.Transactional;
 import net.drive.model.dto.fahrschueler.FahrschuelerListDTO;
 import net.drive.model.entities.administration.allgemein.organisation.Fuehrerschein;
 import net.drive.model.entities.fahrschueler.Fahrschueler;
@@ -27,83 +27,66 @@ public class FahrschuelerListService implements IFahrschuelerListService {
     }
 
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public List<FahrschuelerListDTO> getAllFahrschueler() {
         List<Fahrschueler> entities = fahrschuelerRepo.findAll();
         if (entities == null || entities.isEmpty()) {
             return Collections.emptyList();
         }
         return entities.stream()
-                .filter(Objects::nonNull)
                 .map(this::toListDto)
                 .toList();
     }
 
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public List<FahrschuelerListDTO> getFahrschuelerBenchmark(
             String klasse,
             Integer ageMax,
             Boolean bezahlt,
             String status
     ) {
-        // Fal 1:  (20.000)
-        if (isBlank(klasse) && ageMax == null && bezahlt == null && isBlank(status)) {
+        final String klasseTrimmed = isBlank(klasse) ? null : klasse.trim();
+        final String statusTrimmed = isBlank(status) ? null : status.trim();
+        
+        if (klasseTrimmed == null && ageMax == null && bezahlt == null && statusTrimmed == null) {
             return getAllFahrschueler();
         }
-
-        // Fall 2: sadece Klasse B
-        if (!isBlank(klasse) && ageMax == null && bezahlt == null && isBlank(status)) {
-            return fahrschuelerRepo.findByFuehrerscheinKlasse(klasse.trim()).stream()
-                    .filter(Objects::nonNull)
-                    .map(this::toListDto)
-                    .toList();
+        if (klasseTrimmed != null && ageMax == null && bezahlt == null && statusTrimmed == null) {
+            return mapToListDto(fahrschuelerRepo.findByFuehrerscheinKlasse(klasseTrimmed));
         }
-
-        // Fall 3: Klasse B + 30 Alter
-        if (!isBlank(klasse) && ageMax != null && bezahlt == null && isBlank(status)) {
-            // ageMax=29 => unter 30 
+        if (klasseTrimmed != null && ageMax != null && bezahlt == null && statusTrimmed == null) {
             LocalDate bornAfter = LocalDate.now().minusYears(ageMax.longValue() + 1L);
-            return fahrschuelerRepo.findByKlasseAndBornAfter(klasse.trim(), bornAfter).stream()
-                    .filter(Objects::nonNull)
-                    .map(this::toListDto)
-                    .toList();
+            return mapToListDto(fahrschuelerRepo.findByKlasseAndBornAfter(klasseTrimmed, bornAfter));
         }
-
-        // Fall 4: Klasse B + bezahlt + pruefungsstatus
-        if (!isBlank(klasse) && bezahlt != null && !isBlank(status) && ageMax == null) {
-            Pruefungsstatus st = Pruefungsstatus.valueOf(status.trim());
-            return fahrschuelerRepo.findByKlasseAndBezahltAndStatus(
-                            klasse.trim(),
-                            bezahlt.booleanValue(),
-                            st
-                    )
-                    .stream()
-                    .filter(Objects::nonNull)
-                    .map(this::toListDto)
-                    .toList();
+        if (klasseTrimmed != null && bezahlt != null && statusTrimmed != null && ageMax == null) {
+            Pruefungsstatus st = Pruefungsstatus.valueOf(statusTrimmed);
+            return mapToListDto(fahrschuelerRepo.findByKlasseAndBezahltAndStatus(klasseTrimmed, bezahlt.booleanValue(), st));
         }
-
-        // Fallback:
         return getAllFahrschueler();
     }
 
     private boolean isBlank(String s) {
-        return s == null || s.trim().isEmpty();
+        return s == null || s.isBlank();
+    }
+
+    private List<FahrschuelerListDTO> mapToListDto(List<Fahrschueler> entities) {
+        if (entities == null || entities.isEmpty()) {
+            return Collections.emptyList();
+        }
+        return entities.stream()
+                .map(this::toListDto)
+                .toList();
     }
 
     private FahrschuelerListDTO toListDto(Fahrschueler e) {
-
-        Set<String> klassen;
-        if (e.getFuehrerscheine() == null || e.getFuehrerscheine().isEmpty()) {
-            klassen = Collections.emptySet();
-        } else {
-            klassen = e.getFuehrerscheine().stream()
-                    .filter(Objects::nonNull)
-                    .map(Fuehrerschein::getFuehrerscheinKlasse)
-                    .filter(Objects::nonNull)
-                    .collect(Collectors.toUnmodifiableSet());
-        }
+        Set<Fuehrerschein> fuehrerscheine = e.getFuehrerscheine();
+        Set<String> klassen = (fuehrerscheine == null || fuehrerscheine.isEmpty())
+                ? Collections.emptySet()
+                : fuehrerscheine.stream()
+                        .map(Fuehrerschein::getFuehrerscheinKlasse)
+                        .filter(Objects::nonNull)
+                        .collect(Collectors.toUnmodifiableSet());
 
         return new FahrschuelerListDTO(
                 e.getFahrschuelerId(),
