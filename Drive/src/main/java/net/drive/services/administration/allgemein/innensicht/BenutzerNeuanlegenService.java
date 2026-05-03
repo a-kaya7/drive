@@ -81,7 +81,7 @@ public class BenutzerNeuanlegenService implements IBenutzerNeuanlegenService {
 	}
 
 	public BenutzerDTO mapToDto(Benutzer benutzer) {
-		return new BenutzerDTO(benutzer.getBenutzerId(),
+		return new BenutzerDTO(null,
 				benutzer.getBenutzerkennung(), 
 				benutzer.getAnrede(),
 				benutzer.getVorname(), 
@@ -89,8 +89,8 @@ public class BenutzerNeuanlegenService implements IBenutzerNeuanlegenService {
 				benutzer.getEmail(),
 				benutzer.getBenutzerVon(),
 				benutzer.getBenutzerBis(), 
-				benutzer.getPasswort(), 
-				benutzer.getPasswortWiederholung(),
+				null, 
+				null,
 				benutzer.getPasswortAb(), 
 				benutzer.getZeitraumPasswort(), 
 				benutzer.isPasswortAenderung(),
