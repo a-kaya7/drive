@@ -23,6 +23,7 @@ import Fahrschuelerverwaltung from "./components/Fahrschueler/Fahrschuelerverwal
 import Fahrschuelerneuanlage from "./components/Fahrschueler/Fahrschuelerneuanlage";
 import Fahrschueler from "./components/Fahrschueler/Fahrschueler";
 import Fahrschuelerbearbeiten from "./components/Fahrschueler/Fahrschuelerbearbeiten";
+import FahrschuelerVertrag from "./components/Administration/Drucken/FahrschuelerVertrag";
 
 
 import PortalLayout from "./components/PageLayout/PortalLayout";
@@ -57,6 +58,7 @@ function App() {
             <Route path="/mandantbearbeiten/:idname" element={<Mandantbearbeiten/>} />
             <Route path="/organisationseinheiten" element={<Organisationseinheiten/>} />
             <Route path="/führerscheinverwalten" element={<Fuehrerscheinverwalten/>} />
+            <Route path="/fahrschuelervertrag/:fahrschuelerId" element={<FahrschuelerVertrag />} />
             
           </Route>
           <Route element={<PageFahrschueler/>}>
