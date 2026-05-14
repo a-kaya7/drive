@@ -78,6 +78,10 @@ const FahrschuelerListen = () => {
     }
   };
 
+  const handleFahrschuelerVertrag = (fahrschuelerId: string) => {
+  navigate(`/fahrschuelervertrag/${fahrschuelerId}`);
+};
+
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
   };
@@ -173,9 +177,9 @@ const FahrschuelerListen = () => {
                         <button
                           type="button"
                           style={{ ...iconButton, marginLeft: "0.5rem" }}
-                          onClick={() => alert("Exportieren noch nicht implementiert")}
+                          onClick={() =>  handleFahrschuelerVertrag(u.fahrschuelerId)}
                           aria-label="exportieren"
-                          title="Exportieren"
+                          title="Vertrag exportieren"
                         >
                           <TiExport size={18} />
                         </button>
