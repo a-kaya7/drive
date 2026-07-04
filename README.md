@@ -32,6 +32,9 @@ Die Anwendung befindet sich aktuell in der aktiven Entwicklung und wird kontinui
 - Git
 - GitHub
 
+## Architektur
+Modulith Architektur
+
 ## Funktionen/Komponenten
 
 ### Administration
