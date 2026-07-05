@@ -5,6 +5,8 @@ import { FaUserEdit } from "react-icons/fa";
 import { FiTrash2 } from "react-icons/fi";
 import { TiExport } from "react-icons/ti";
 import { api } from "../ApiConfig/api";
+import { LuUsers } from "react-icons/lu";
+
 
 const PRIMARY_COLOR = "#174bd1ff";
 
@@ -182,6 +184,16 @@ const FahrschuelerListen = () => {
                           title="Vertrag exportieren"
                         >
                           <TiExport size={18} />
+                        </button>
+                        <button
+                          type="button"
+                          style={{ ...iconButton, marginLeft: "0.5rem"}}
+                          onClick={() => window.open(`/engagement/${u.fahrschuelerId}`, "engagementWindow",
+                            "width=1500,height=1000,left=100,top=100,resizable=yes,scrollbars=yes"
+                          )}
+                          aria-label="Engagement"
+                          title="Engagement">
+                            <LuUsers size={18} />
                         </button>
                       </td>
                     </tr>
